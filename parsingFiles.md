@@ -78,7 +78,6 @@ and lets you scroll back through to find the information you're looking for.
     >>> cat pw.pwo
     ...
  
- ___
  
  A better way to search through longer files is to use the <code>more</code> command, which displays the file in the terminal one page at a time.  
  
@@ -99,3 +98,53 @@ and lets you scroll back through to find the information you're looking for.
      
  ___
   
+## Peeking the contents of a file
+
+Sometimes we know that the information we're interested in is contained at the top or bottom of the file, or we interested to check on the status of a file that is being updated. For these instances there are the commands <code>head</code>, which prints the first ten lines of a file, and <code>tail</code> which prints the final ten lines of a file.
+    
+ ### Example
+ 
+     >>>tail pw.pwo
+     
+     Parallel routines
+ 
+     PWSCF        :   7m31.32s CPU   3m55.45s WALL
+
+ 
+     This run was terminated on:  15:27:43   9Mar2022            
+
+     =------------------------------------------------------------------------------=
+        JOB DONE.
+     =------------------------------------------------------------------------------=
+    
+Both <code>head</code> and <code>tail</code> allow you to manually set the number of lines that are printed using the <code>-n</code> option. For the <code>head</code> command this lets you to print the top N lines
+
+### Example
+
+    >>>head -n 20 pw.pwi
+    &CONTROL
+      calculation = 'relax'
+      prefix      = 'NiFe(CN)6Na2'
+      outdir      = './TMP'
+      pseudo_dir  = '/home/vol07/scarf1097/ESPRESSO/pslibrary/pbesol/GIPAW_RECON'
+      verbosity   = 'high'
+    /
+
+    &SYSTEM
+       ntyp      = 5
+       nat       = 16
+       ibrav     = 2
+       celldm(1) = 19.100
+       ecutwfc   = 50
+       
+Finally, using pipes <code>|</code> it is possible to stack <code>head</code> and <code>tail</code> (as well as other) commands. A pipe is a way of funnelling the output of one command into the input of another command.
+
+### Example
+
+In the following example we use the <code>cat</code> command to print the entire file, we use a <code>|</code> to pipe the output to the <code>tail</code> command. With <code>tail</code> we choose to print the final 100 lines and use a <code>|</code> to pipe the output to <code>head</code>. Finally the <code>head</code> command prints one line to the terminal.
+
+    >>>cat pw.pwo | tail -n 100 | head -n 1     
+    Final energy             =    -976.2374274231 Ry
+    
+
+    
