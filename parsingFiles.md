@@ -146,5 +146,81 @@ In the following example we use the <code>cat</code> command to print the entire
     >>>cat pw.pwo | tail -n 100 | head -n 1     
     Final energy             =    -976.2374274231 Ry
     
-
+___
     
+## Getting to exactly what you want
+
+Everything so far has been about displaying the contents of files in a quick way in the terminal, and we saw in the last example how we could target specific information if we know where they are in the file.  
+
+But, there is a better way to get to the heart of what we are looking for, the <code>grep</code> command. Using <code>grep</code> we can search a file for a specific character pattern and print the line(s) where it appears
+
+### Example
+
+    >>> grep 'Final energy' pw.pwo
+    Final energy             =    -976.2374274231 Ry
+    
+Like before it is possible to use <code>|</code> to direct the output from other commands into the grep and <em>visa versa</em>
+
+    >>>grep 'scf' pw.pwo | tail -n 16
+    number of scf cycles    =   6
+    estimated scf accuracy    <       0.00001146 Ry
+    estimated scf accuracy    <       0.00041130 Ry
+    estimated scf accuracy    <       0.00017477 Ry
+    estimated scf accuracy    <       0.00054332 Ry
+    estimated scf accuracy    <       0.00012149 Ry
+    estimated scf accuracy    <       0.00001362 Ry
+    estimated scf accuracy    <       0.00000621 Ry
+    estimated scf accuracy    <       0.00000496 Ry
+    estimated scf accuracy    <       0.00000107 Ry
+    estimated scf accuracy    <       0.00000018 Ry
+    estimated scf accuracy    <       0.00000006 Ry
+    estimated scf accuracy    <       0.00000002 Ry
+    estimated scf accuracy    <       0.00000004 Ry
+    estimated scf accuracy    <          5.0E-09 Ry
+    bfgs converged in   7 scf cycles and   5 bfgs steps
+    
+The <code>grep</code> command can also be used to print information in the lines preceeding or following a character match using the <code>-B</code> option (before) and the <code>-A</code> option (after). These options are particularly useful in situations where a line we're searching for only has numbers.
+
+### Example
+
+In the input file for Quantum ESPRESSO the k-point grid is denoted across two lines in the file (<em>hint: we can check this with a <code>cat pw.pwo</code></em>). So to quickly obtain the k-point grid if we can <code>grep</code> and print one additinal line:
+    
+    >>>grep -A 1 'K_POINTS' pw.pwo
+    K_POINTS automatic
+    2 2 2 1 1 1
+    
+Finally, it is also possible to search for more than one character expression using the <code>-e</code> option.
+    
+### Example
+
+In this example we are tracking the number of cycles for the electronic optimization (scf) and geometry optimization (bfgs). However, just a simple grep will print too much data, so we can pipe the output of the first <code>grep</code> to a second, which matches against a common string (in this case number).
+    
+    >>>grep -e 'bfgs' -e 'scf' pw.pwo | grep 'number'
+    number of scf cycles    =   1
+    number of bfgs steps    =   0
+    number of scf cycles    =   2
+    number of bfgs steps    =   1
+    number of scf cycles    =   3
+    number of bfgs steps    =   1
+    number of scf cycles    =   4
+    number of bfgs steps    =   2
+    number of scf cycles    =   5
+    number of bfgs steps    =   3
+    number of scf cycles    =   6
+    number of bfgs steps    =   4
+    
+In this case, the order to the <code>grep</code> commands does not make a difference to the output:
+
+    >>>grep 'number' pw.pwo | grep -e 'bfgs' -e 'scf'
+    number of scf cycles    =   1
+    number of bfgs steps    =   0
+    number of scf cycles    =   2
+    number of bfgs steps    =   1
+    number of scf cycles    =   3
+    number of bfgs steps    =   1
+    number of scf cycles    =   4
+    number of bfgs steps    =   2
+    number of scf cycles    =   5
+    number of bfgs steps    =   3
+    number of scf cycles    =   6
+    number of bfgs steps    =   4
