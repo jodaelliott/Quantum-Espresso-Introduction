@@ -224,3 +224,21 @@ In this case, the order to the <code>grep</code> commands does not make a differ
     number of bfgs steps    =   3
     number of scf cycles    =   6
     number of bfgs steps    =   4
+    
+## Getting exactly what we want, exactly how we want (Advanced Topic)
+
+    >>>grep 'scf accuracy' relax_19.100.pwo | tail -n 14 | awk '{printf("%4d %15.5e\n",  NR, $5*13.605662285137)}' | tee finalScf.dat
+      1     1.55921e-04
+      2     5.59601e-03
+      3     2.37786e-03
+      4     7.39223e-03
+      5     1.65295e-03
+      6     1.85309e-04
+      7     8.44912e-05
+      8     6.74841e-05
+      9     1.45581e-05
+     10     2.44902e-06
+     11     8.16340e-07
+     12     2.72113e-07
+     13     5.44226e-07
+     14     6.80283e-08
