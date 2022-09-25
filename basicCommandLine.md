@@ -1,6 +1,6 @@
 # How to interact with your computer using the commandline
 
-![image info](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png')
+![image info](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png?raw=true')
 
 ## What is the Terminal?
 
