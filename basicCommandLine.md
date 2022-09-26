@@ -4,9 +4,9 @@
 
 ## What is the Terminal?
 
-## What should I use the terminal?
+## Why should we use the terminal?
 
-## How should I access the terminal then?
+## How can I access the terminal?
 
 ## How to exectute commands
 
