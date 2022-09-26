@@ -189,6 +189,18 @@ A good way to list the files in the directory is using the compound options
 
 Look again at the manual to see what each of these options is doing. You can change them one-by-one to visualize their effect.
 
+Up to now we have been typing everything in full, each time we wanted to execute a command. There are some keyboard short-cuts that offer us some serious time saves
+
+| Shortcut | Function |
+| -------- | -------- |
+| tab      | Autocompletes text |
+| Up/Down Arrow keys | Cycle through previous commands |
+| Ctrl + a | Go to the beginning of the line |
+| Ctrl + e | Go to the end of the line |
+| Ctrl + k | Delete to the end of the line |
+| Ctrl + r | Search through command history |
+| Ctrl + c | Kill current command |
+
 ## Scripts
 
 In the final part of this section, we will look at what it means to create a script.
