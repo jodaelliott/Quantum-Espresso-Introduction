@@ -19,7 +19,7 @@ As an example lets try:
 
 
    >>> pwd
-
+   /home/nab23632
 
 ls
 pwd
