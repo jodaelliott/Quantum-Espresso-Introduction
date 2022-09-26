@@ -1,6 +1,6 @@
 # How to interact with your computer using the commandline
 
-![Overview of part 1](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png?raw=true')
+![Overview of part 1](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png?raw=true)
 
 ## What is the Terminal?
 
@@ -37,13 +37,22 @@ The result should be something like this:
     Desktop    espresso.tar.gz  hematene_001.pwi  Music	  NiFeCNNa2_exp_dft.pdf  Pictures	 stuff	    tmp     Zotero
     Documents  FEFF		    july.png	      mylocal_db  notebook		 privatemodules  Templates  Videos
 
-
-pwd
-cat
-
-
+The command has returned a list of files and folders, specifically, the files and folders which are in the current directory (or folder).
+We should all still be in the home directory and so we see the Documents, Downloads, Desktop directories.
 
 ### Make
+
+Now we can get started on learning to operate using the command line, 
+the way we will do this is by making new files and folders and moving around the file structure.
+
+For this we will need some new commands:
+
+| Command | Description |
+| --------|-------------|
+| mkdir   | Make a new directory |
+| cp      | Copy a file or folder from one location to another |
+| touch   | Create a new black file |
+| cd      | Change the directory |
 
 touch
 mkdir
