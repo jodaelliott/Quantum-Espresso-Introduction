@@ -178,12 +178,46 @@ Using the <code>sed</code> command we can find and replace a matching string, mo
 
 ## Advanced Options and keyboard shortcuts
 
-man command
-command --help
-<code>ls -ltrh</code>
-<code>grep -e</code>
+A lot of the commands we have already seen have a set of options that alter the way that they perform. For most cases, you can view all of the
+possible options for a command by looking at its manual. We have already seen the <code>-r</code> option for <code>cp</code> and <code>rm</code>.
+
+    $ man ls
+
+A good way to list the files in the directory is using the compound options
+
+    $ ls -ltrh
+
+Look again at the manual to see what each of these options is doing. You can change them one-by-one to visualize their effect.
 
 ## Scripts
 
-sh script
-make executable
+In the final part of this section, we will look at what it means to create a script.
+A script is like a recipe, in that it is a collection of commands that are executed in sequence to perform a task
+
+An example script has been prepared for you to look at and use
+
+    $ cat example_script.sh
+    #!/bin/bash
+    
+    mkdir script_folder
+    cd script_folder
+    ls
+    
+    sed s/Red/Blue/g ../littleRedRidingHood.txt > ./littleBlueRidingHood.txt
+    
+    ls -ltrh
+    grep -e Red -e Blue ./littleBlueRidingHood.txt
+    
+    cd ..
+
+You should be able to recognise all of the commands in the script, and predict what it will do. The first line is called a shebang, if it were executable, this would tell the computer how to run the commands. You can use <code>man grep</code> to see how the <code>-e</code> options works.
+
+We can run this script like
+
+    $ sh ./example_script.sh
+
+To run the script as an executeable file you have to change its mode
+
+    $chmod +x example_script.sh
+    ./example_script.sh
+
