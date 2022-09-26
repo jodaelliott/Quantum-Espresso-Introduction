@@ -52,7 +52,7 @@ For this we will need some new commands:
 | mkdir   | Make a new directory |
 | cp      | Copy a file or folder from one location to another |
 | mv      | Move a file or directory from one plance to another |
-| touch   | Create a new black file |
+| touch   | Create a new blank file |
 | cd      | Change the directory |
 
 Lets make a new directory for todays tutorial:
@@ -133,7 +133,8 @@ Before we move on, lets take a quick look at how to delete things with the comma
     $ rm ./*txt
     $ ls
 
-The <code>*</code> is a wildcard, any files that matched the pattern ending 'txt' has been removed.
+The <code>*</code> is a wildcard; any files with text matching the pattern 'txt' at the
+end of the word have been removed.
 
 Lets try to remove the directory in the same way
 

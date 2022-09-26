@@ -107,7 +107,7 @@ which prints the first ten lines of a file, and <code>tail</code> which prints t
     
  ### Example
  
-     $ tail pw.pwo
+     $ tail relax.pwo
      
      Parallel routines
  
@@ -202,7 +202,7 @@ These options are particularly useful in situations where a line we are searchin
 In the input file for Quantum ESPRESSO the k-point grid is denoted across two lines in the file (<em>hint: we can check this with a <code>cat relax.pwo</code></em>). 
 So to quickly obtain the k-point grid if we can <code>grep</code> and print one additinal line:
     
-    >>>grep -A 1 'K_POINTS' pw.pwo
+    >>>grep -A 1 'K_POINTS' relax.pwo
     K_POINTS automatic
     2 2 2 1 1 1
     

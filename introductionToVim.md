@@ -14,6 +14,8 @@
 |         |             |
 | /       | Search for a word from the top of the file |
 | ?       | Search for a word from the bottom of the file |
+| n       | Go to next search match |
+| N       | Go to previous search match |
 
 ## Keyboard Shortcuts
 
