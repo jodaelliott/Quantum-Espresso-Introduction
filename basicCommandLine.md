@@ -1,6 +1,6 @@
 # How to interact with your computer using the commandline
 
-![image info](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png?raw=true')
+![Overview of part 1](./Figures/mapBasicCommandLine/mapBasicCommandLine.001.png?raw=true')
 
 ## What is the Terminal?
 
@@ -11,6 +11,15 @@
 ## How to exectute commands
 
 ### Status
+
+Now that the terminal is open, we can start to type some commands. The easiest to get
+started with are those those that report back something about the current status.
+
+As an example lets try:
+
+
+   >>> pwd
+
 
 ls
 pwd
