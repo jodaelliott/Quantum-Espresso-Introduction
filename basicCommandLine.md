@@ -17,9 +17,9 @@ started with are those those that report back something about the current status
 
 As an example lets try:
 
+    >>> pwd
+    /home/nab23632
 
-   >>> pwd
-   /home/nab23632
 
 ls
 pwd
