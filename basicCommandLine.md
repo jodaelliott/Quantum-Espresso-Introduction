@@ -76,6 +76,22 @@ We can now enter the new directory
     /home/nab23632/CommandLineTutorial
     $ ls
       
+You should see from the <code>pwd</code> command that our location has changed from the home directory. There are several different ways we can use the <code>cd</code> command, including a lot of ways to do the same thing.
+Lets take a few minutes to get familiar with them.
+
+| Command | Desctiption |
+| ------- | ----------- |
+| <code>cd</code> | Go to home directory |
+| <code>cd ~</code> | Go to home directory |
+| <code>cd $HOME</code> | Go to home directory |
+| <code>cd CommandLineTutorial</code> | Go to the directory CommandLineTutorial (which is in the current directory) |
+| <code>cd ./CommandLineTutorial</code> | Go to the directory CommandLineTutorial (which is in the current directory) |
+| <code>cd /home/nab23632/CommandLineTutorial</code> | Go to the directory CommandLineTutorial (which is in /home/nab23632/) |
+| <code>cd .</code> | Go to current directory |
+| <code>cd ..</code> | Go up one directory |
+| <code>cd ../../</code> | Go up two directories |
+| <code>cd -</code> | Go to last directory |
+
 
 ### Destroy
 
