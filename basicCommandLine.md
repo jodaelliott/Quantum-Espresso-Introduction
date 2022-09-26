@@ -62,7 +62,7 @@ Lets make a new directory for todays tutorial:
 The <code>mkdir</code> command will make a new directory within the current one, it will be called <code>CommandLineTutorial</code>.
 It is worth noting that you can give many arguments to the <code>mkdir</code> command, it will create a new directory for each one.
 It is also worth noting that the directory name has no whitespaces, by default whitespace is interpretted as introducing a new argument.
-The <code>ls>/code> should help you confirm that the new directory has been created.
+The <code>ls</code> should help you confirm that the new directory has been created.
 
     # This is wrong!
     $ mkdir Command Line Tutorial
