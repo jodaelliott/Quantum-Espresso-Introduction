@@ -10,6 +10,10 @@
 | :wq     | Save and Quit |
 | :set number | Add line numbers |
 | :set nonumber | Remove line numbers |
+| :1,$ s/Red/Blue/g | Find and replace red with blue |
+|         |             |
+| /       | Search for a word from the top of the file |
+| ?       | Search for a word from the bottom of the file |
 
 ## Keyboard Shortcuts
 
@@ -19,6 +23,8 @@
 | G       | Go to bottom of file |
 | Ctrl+f  | Page down |
 | Ctrl+b  | Page up |
+| u       | Undo    |
+| Ctrl+r  | Redo    |
 |         |         |
 | p       | Paste   |
 | yy      | Copy line |
