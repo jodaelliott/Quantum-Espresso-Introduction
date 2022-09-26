@@ -51,6 +51,7 @@ For this we will need some new commands:
 | --------|-------------|
 | mkdir   | Make a new directory |
 | cp      | Copy a file or folder from one location to another |
+| mv      | Move a file or directory from one plance to another |
 | touch   | Create a new black file |
 | cd      | Change the directory |
 
@@ -92,6 +93,34 @@ Lets take a few minutes to get familiar with them.
 | <code>cd ../../</code> | Go up two directories |
 | <code>cd -</code> | Go to last directory |
 
+Now we can make our way back to the CommandLineTutorial directory (from where ever we are)
+
+    $ cd /home/nab23632/CommandLineTutorial
+    $ ls
+
+Currently there are no files/folders inside this directory. Lets make a text file called firstFile.txt
+
+    $ touch firstFile.txt
+    $ ls
+
+As stated in the table above, the <code>touch</code> command will create a new file object (or objects) in the current directory.
+
+Now, we can create a copy of the firstFile.txt using the <code>cp</code> command
+
+    $ cp ./firstFile.txt ./firstFileCopy.txt
+    $ ls
+
+The first argument of the <code>cp</code> command is the source and the second argument is the destination, both are mandatory.
+We can use the <code>mv</code> command to move the file from one location to another
+
+    $ mv firstFile.txt secondFile.txt
+    $ ls
+
+Lets use the <code>cp</code> command to get a folder we can use to perform some commands on.
+
+    $ cp -r /dls/science/groups/spectroscopy/Joshua/materialLecture1 .
+    $ ls 
+    $ ls ./materialLecture1
 
 ### Destroy
 
