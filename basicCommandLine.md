@@ -122,10 +122,25 @@ Lets use the <code>cp</code> command to get a folder we can use to perform some 
     $ ls 
     $ ls ./materialLecture1
 
+The option <code>-r</code> stands for recursive copy and works for copying entire directories in one go.
+The files <code>relax.pwi>/code> and <code>relax.pwo</code> are examples of a Quantum ESPRESSO input and output file, they are simple
+ASCII text files.
+
 ### Destroy
 
-rm
-rmdir
+Before we move on, lets take a quick look at how to delete things with the command line. Remove the two blank text documents from before
+
+    $ rm ./*txt
+    $ ls
+
+The <code>*</code> is a wildcard, any files that matched the pattern ending 'txt' has been removed.
+
+Lets try to remove the directory in the same way
+
+    $ rm ./materialLecture1
+    rm: cannot remove ‘materialLecture1/’: Is a directory
+
+We cannot simply remove a directory as easily as a file, instead we can use one of the two commands <code>rm -r</code> or <code>rmdir</code>.
 
 ### Search
 
