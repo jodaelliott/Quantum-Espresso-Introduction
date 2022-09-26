@@ -123,7 +123,7 @@ Lets use the <code>cp</code> command to get a folder we can use to perform some 
     $ ls ./materialLecture1
 
 The option <code>-r</code> stands for recursive copy and works for copying entire directories in one go.
-The files <code>relax.pwi>/code> and <code>relax.pwo</code> are examples of a Quantum ESPRESSO input and output file, they are simple
+The files <code>relax.pwi</code> and <code>relax.pwo</code> are examples of a Quantum ESPRESSO input and output file, they are simple
 ASCII text files.
 
 ### Destroy
