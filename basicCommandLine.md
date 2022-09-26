@@ -141,13 +141,40 @@ Lets try to remove the directory in the same way
     rm: cannot remove ‘materialLecture1/’: Is a directory
 
 We cannot simply remove a directory as easily as a file, instead we can use one of the two commands <code>rm -r</code> or <code>rmdir</code>.
+(If you do this, dont forget to copy the directory again, we will need it!)
 
 ### Search
 
-grep
-sed
-awk
-paste
+We are going to see alot more of the following commands in the next section, when we dive into analysing files, but we can introduce the commands that help us search for content now
+
+| Command | Description |
+| ------- | ----------- |
+| <code>grep</code> | Match a keyword in a file and print all lines containing that keyword |
+| <code>sed</code> | A find and replace function for files |
+| <code>awk</code> | A scripting language we can use to manipulate output |
+| <code>cat</code> | Print a file to the terminal |
+| <code>paste</code> | A way to print text files side-by-side |
+
+The contents of a file can be displayed with the <code>cat</code> commamnd. Lets look at the story of Little Red Riding Hood
+
+    $ cd materialLecture1
+    $ cat littleRedRidingHood.txt
+
+The text is printed directly to the terminal, we will see how to control this better soon.
+
+We might be interested to see all the times the word 'Red' is used in the story, for this we can use the <code>grep</code> command
+
+    $ grep Red littleRedRidingHood.txt
+    $ grep 'Little Red Riding Hood' littleRedRidingHood.txt
+
+Grep searches for and highlights all the times a keyword or phrase is used. To search a phrase, we must use speech marks
+
+Using the <code>sed</code> command we can find and replace a matching string, more over we can use a pipe to catch the substituted text
+
+    $ sed s/Red/Blue/g littleRedRidingHood.txt
+    $ sed s/Red/Blue/g littleRedRidingHood.txt > littleBlueRidingHood.txt
+    $ ls
+    $ grep Red littleBlueRidingHood.txt
 
 ## Advanced Options and keyboard shortcuts
 
