@@ -4,11 +4,24 @@
 
 ## What is the Terminal?
 
+ - A way to interface with a computer using the command line
+ - A place to execute text based commands
+
 ## Why should we use the terminal?
+
+ - Much faster than graphical applications
+ - Many more functions
+ - Standard remote high performance compute facilties
 
 ## How can I access the terminal?
 
+ - No machine session
+ - Activities
+ - Search terminal
+
 ## How to exectute commands
+
+ - Just type them
 
 ### Status
 
