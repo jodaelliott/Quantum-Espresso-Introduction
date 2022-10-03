@@ -67,8 +67,20 @@ This means in total our job will split work across 64 cores, and each core will 
 
     #SBATCH -t 560
 
-    #SBATCH -o qe_job_%J.log
+The <code>-t</code> is the total amount of time we are requesting for the job.
+We should set this time making sure that our calculation will finish and adhering to the maximum queue lengths (<code>devel</code> = 12 Hours; <code>scarf</code>7 days).  
+The job total time can be set with different formats, generally is easiest to stick to one. 
+Acceptable time formats include  "minutes",  "minutes:seconds", "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds".
+In this example <code>560</code> minutes are requested, which is equivalently:
 
+    #SBATCH -t 560
+    #SBATCH -t 560:00
+    #SBATCH -t 9:20:00
+    #SBATCH -t 0-9:20
+    #SBATCH -t 0-9:20:00
+
+
+    #SBATCH -o qe_job_%J.log
     #SBATCH -e qe_job_%J.err
     
     espressodir=/home/vol07/scarf1097/ESPRESSO/q-e-7.0/q-e_intel_19.0_opt/bin/
