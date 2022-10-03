@@ -13,6 +13,8 @@
 |                      |                                                          |                        |
 | <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
 
+# Som information about HPC
+
 ![Cluster Image](./Figures/clusterStructure/clusterStructure.001.png)
 
 # Getting set up on SCARF
@@ -35,6 +37,36 @@ If this is the first time you have logged into scarf, you may also be asked some
     Are you sure you want to continue connecting (yes/no)?
 
 You can type <code>yes</code> to add scarf to your list of known_hosts which are stored at <code>~/.ssh/known_hosts</code>
+
+We should now be connected to scarf, we can check where we are and the contents of the current folder
+
+    $ pwd
+    /home/vol07/scarf1097
+    $ ls
+    drwxr-xr-x  2 scarf1097 diag 4.0K Jan  7  2022 example_scripts
+    lrwxrwxrwx  1 scarf1097 diag   19 Jan  7  2022 nab23632 -> /work4/dls/nab23632
+    drwxr-xr-x  4 scarf1097 diag 4.0K Jan  9  2022 ELPA
+    -rw-r--r--  1 scarf1097 diag  181 Jan  9  2022 espresso.sh
+    drwxr-xr-x 10 scarf1097 diag 4.0K Jan 13  2022 SPACK
+    drwxr-xr-x  3 scarf1097 diag 4.0K Mar 18  2022 EXCITING
+    drwxr-xr-x  3 scarf1097 diag 4.0K Mar 28  2022 FEFF
+    drwxr-xr-x  4 scarf1097 diag 4.0K Apr  5 14:35 tmp
+    -rw-r--r--  1 scarf1097 diag   99 Apr  6 11:01 load_espresso.sh
+    -rw-r--r--  1 scarf1097 diag 4.7K Apr 13 11:26 CuBTC_activated.cif
+    drwxr-xr-x  2 scarf1097 diag 4.0K Apr 21 14:28 bash_example
+    drwxr-xr-x  4 scarf1097 diag 4.0K Apr 22 14:33 LIBXC
+    drwxr-xr-x  7 scarf1097 diag 4.0K Apr 22 15:10 ESPRESSO
+    -rw-r--r--  1 scarf1097 diag 1.3K May  6 11:11 test.pwi
+    drwxr-xr-x  4 scarf1097 diag 4.0K Jun 22 11:35 CP2K
+    drwxr-xr-x  2 scarf1097 diag 4.0K Aug  8 16:57 scarf_usage
+
+We see on login we arrive at our home folder, which is on the <code>/home</code> partition of the cluster.
+
+To exit the cluster you can type
+
+    $ exit
+
+
 
 # The Job Script (Line by Line)
 
