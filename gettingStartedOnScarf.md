@@ -37,9 +37,23 @@ You can type <code>yes</code> to add scarf to your list of known_hosts which are
 
 # The Job Script (Line by Line)
 
+    #!/bin/bash
+    #SBATCH -p scarf
+    #SBATCH -C amd
+    #SBATCH --nodes=2 --ntasks-per-node=32 
+    #SBATCH -t 560
+    #SBATCH -o job_%J.log
+    #SBATCH -e job_%J.err
+    
+    export OMP_NUM_THREADS=1
+    module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
+
+    mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
+
 We have already seen the first line of the job file in the previous lecture.
 
     #!/bin/bash
+
 
 This is the [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) and tells the computer how to exectue the script.
 In this case we are asking for <code>/bin/bash</code>
@@ -111,6 +125,7 @@ We have seen the <code>module load</code> command, if we include this in the job
     mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
 
 Finally the <code>mpirun</code> command is used to execute the parallel job.
-Here <code>pw.x<code> is the part of the Quantum Espresso software suite that performs the DFT calculation. 
+Here <code>pw.x</code> is the part of the Quantum Espresso software suite that performs the DFT calculation. 
 It also has the associated option <code>-inp</code> which specifies where to read input from.
 Moreover, we use a <code>></code> to redirect the output into a new file <code>'diamond.pwo'</code>
+The variable <code>${SLURM_NTASKS}</code> is an environment variable that automatically contains the correct number of tasks we want to run with.
