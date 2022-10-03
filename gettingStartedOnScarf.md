@@ -13,7 +13,7 @@
 |                      |                                                          |                        |
 | <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
 
-[Cluster Image](./Figures/clusterStructure/clusterStructure.001.png)
+[!Cluster Image](./Figures/clusterStructure/clusterStructure.001.png)
 
 # Getting set up on SCARF
 
