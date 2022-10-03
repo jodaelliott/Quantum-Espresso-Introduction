@@ -1,4 +1,17 @@
 
+# New Commands in this lecture
+
+| Command | Key Options | Description |
+| ------- | ----------- | ----------- |
+| <code>ssh</code>    | <code>-X</code> <code>-Y</code>                          | Access a remote machine |
+| <code>scp</code>    |                                                          | Copy from a remote machine |
+| <code>module</code> | <code>avail</code> <code>spider</code>                   | Search for availavble software |
+|                     | <code>load</code> <code>unload</code> <code>purge</code> | load or unload software |
+| sbatch              |                                                          | Submit a job script to the scheduler |
+| squeue              | <code>-u</code>                                          | Print the queue status |
+| scancel             |                                                          | Cancel a queued/running job |
+
+
 # Getting set up on SCARF
 
 You should apply for access to SCARF [here](https://www.scarf.rl.ac.uk/registration.html).
