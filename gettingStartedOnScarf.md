@@ -97,20 +97,29 @@ By default we can see that the created directory has the permissions for persona
 
 If we plan to work on private materials, we might want to remove these permissions:
 
-    $ chmod o-rx nab23632
+    $ chmod o-rx myfedid
 
-This removes read and execute access to (o)ther user (in different groups), i.e. those outside of Diamond Light Source.
+This removes read and execute access to (<b>o</b>)ther user (in different groups), i.e. those outside of Diamond Light Source.
 
     $ ls
     drwxr-x--- 16 scarf1097 diag 4.0K Sep  6 09:56 myfedid
 
-    $ chmod g-rx nab23632
+    $ chmod g-rx myfedid
     $ ls
     drwx------ 16 scarf1097 diag 4.0K Sep  6 09:56 myfedid
 
-The second command shows how to remove access of other (g)roup members, i.e. other people from Diamond Light Source.
+The second command shows how to remove access of other (<b>g</b>)roup members, i.e. other people accessing SCARF through their affiliation with Diamond Light Source.
+
+Now that we have a directory to work in, we can create a soft link (shortcut) to our working directory. Lets go to our home directory
+
+    $ cd
+    $ ln -s /work4/dls/myfedid .
+    $ ls
+    lrwxrwxrwx  1 scarf1097 diag   19 Jan  7  2022 myfedid -> /work4/dls/myfedid
 
     $ cd myfedid
+
+
 
 # The Job Script (Line by Line)
 
