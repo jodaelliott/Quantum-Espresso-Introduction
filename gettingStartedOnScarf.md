@@ -52,7 +52,18 @@ For our work at Diamond we will mostly be performing small tests in the the <cod
 
     #SBATCH -C amd
 
+SCARF is a heterogenous cluster, which means that it is built from many different types of compute nodes.
+The <code>-C<code> option allows us to pick which type of node we run our simulations on.
+This can be helpful in trying to configure our job size, for example in the above example we have requested to use the [SCARFs AMD nodes](https://www.scarf.rl.ac.uk/user-guides/amd.html#running-jobs-on-amd-nodes).
+The AMD nodes come with 32-core-per-node, so we know that we must configure our job to run in mutiples of 32 processes. 
+
     #SBATCH --nodes=2 --ntasks-per-node=32 
+
+Here we are requesting resources. 
+The option <code>--nodes</code> specifies how many nodes we would like.
+The option <code>--ntasks-per-node</code> specifies how many tasks/processes we would like on each node.
+In the example, we are asking for 2 AMD nodes, and 32 tasks/processes for each node.
+This means in total our job will split work across 64 cores, and each core will have an associated task.
 
     #SBATCH -t 560
 
