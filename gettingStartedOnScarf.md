@@ -33,4 +33,32 @@ If this is the first time you have logged into scarf, you may also be asked some
 
 You can type <code>yes</code> to add scarf to your list of known_hosts which are stored at <code>~/.ssh/known_hosts</code>
 
+# The Job Script (Line by Line)
+
+    #!/bin/bash
+    #SBATCH -p scarf
+    #SBATCH -C amd
+    #SBATCH --nodes=2 --ntasks-per-node=32 
+    #SBATCH -t 560
+    #SBATCH -o qe_job_%J.log
+    #SBATCH -e qe_job_%J.err
+    
+    espressodir=/home/vol07/scarf1097/ESPRESSO/q-e-7.0/q-e_intel_19.0_opt/bin/
+    
+    pw=$espressodir'pw.x'
+    pp=$espressodir'pp.x'
+    xs=$espressodir'xspectra.x'
+    
+    export OMP_NUM_THREADS=1
+    
+    #input=c60_scf-star1s
+    input=xspec
+    
+    echo ${SLURM_NTASKS}
+    
+    export KMP_AFFINITY=compact
+    export I_MPI_PIN_DOMAIN=auto
+    
+    #mpirun -np ${SLURM_NTASKS} $pw -inp $input'.pwi' > $input'.pwo'
+    mpirun -np ${SLURM_NTASKS} $xs -inp $input'.pwi' > $input'.pwo'
 
