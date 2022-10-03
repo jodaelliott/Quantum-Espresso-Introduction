@@ -39,14 +39,16 @@ We have already seen the first line of the job file in the previous lecture.
 
     #!/bin/bash
 
-This is the [shebang] (https://en.wikipedia.org/wiki/Shebang_(Unix)) and tells the computer how to exectue the script.
+This is the [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) and tells the computer how to exectue the script.
 In this case we are asking for <code>/bin/bash</code>
 
 In the next few lines we will see the commands that provide instructions to the SLURM job scheduler. These lines all start with the command <code>#SBATCH</code>
 
     #SBATCH -p scarf
 
-The <code>-p</code> option instructs the scheduler on the queue/partitiono we should submit to. There is a [list of available partitions] (https://www.scarf.rl.ac.uk/jobs.html#choosing-a-sub-section-of-the-cluster) on the SCARF help pages. For Diamond we will mostly be performing small tests in the the <code>devel</code> partition and running calculations in the <code>scarf</code> partition. 
+The <code>-p</code> option instructs the scheduler on the queue/partitiono we should submit to. 
+There is a [list of available partitions](https://www.scarf.rl.ac.uk/jobs.html#choosing-a-sub-section-of-the-cluster) on the SCARF help pages. 
+For our work at Diamond we will mostly be performing small tests in the the <code>devel</code> partition and running calculations in the <code>scarf</code> partition. 
 
     #SBATCH -C amd
 
