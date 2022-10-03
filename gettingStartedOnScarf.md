@@ -3,13 +3,15 @@
 
 | Command | Key Options | Description |
 | ------- | ----------- | ----------- |
-| <code>ssh</code>    | <code>-X</code> <code>-Y</code>                          | Access a remote machine |
-| <code>scp</code>    |                                                          | Copy from a remote machine |
-| <code>module</code> | <code>avail</code> <code>spider</code>                   | Search for availavble software |
-|                     | <code>load</code> <code>unload</code> <code>purge</code> | load or unload software |
-| sbatch              |                                                          | Submit a job script to the scheduler |
-| squeue              | <code>-u</code>                                          | Print the queue status |
-| scancel             |                                                          | Cancel a queued/running job |
+| <code>ssh</code>     | <code>-X</code> <code>-Y</code>                          | Access a remote machine |
+| <code>scp</code>     |                                                          | Copy from a remote machine |
+| <code>module</code>  | <code>avail</code> <code>spider</code>                   | Search for availavble software |
+|                      | <code>load</code> <code>unload</code> <code>purge</code> | load or unload software |
+| <code>sbatch</code>  |                                                          | Submit a job script to the scheduler |
+| <code>squeue</code>  | <code>-u</code>                                          | Print the queue status |
+| <code>scancel</code> |                                                          | Cancel a queued/running job |
+|                      |                                                          |                        |
+| <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
 
 
 # Getting set up on SCARF
@@ -79,29 +81,36 @@ In this example <code>560</code> minutes are requested, which is equivalently:
     #SBATCH -t 0-9:20
     #SBATCH -t 0-9:20:00
 
+The next two lines specify the names of two files created to handle text output from the job.
+This is not necessarily output from the code we use to perform the simulation.
 
-    #SBATCH -o qe_job_%J.log
-    #SBATCH -e qe_job_%J.err
-    
-    espressodir=/home/vol07/scarf1097/ESPRESSO/q-e-7.0/q-e_intel_19.0_opt/bin/
-    
-    pw=$espressodir'pw.x'
+    #SBATCH -o job_%J.log
+    #SBATCH -e job_%J.err
 
-    pp=$espressodir'pp.x'
+The <code>-o</code> option denotes the name given to the file created for standard output.
+The <code>-e</code> option denotes the name given to the file created for any error messages.
+The <code>%J</code> is an environment variable that stores the job indentification number. 
+Using this option helps to match these output files to a specific job.
 
-    xs=$espressodir'xspectra.x'
+There are several further options that can be added to this section of the job submission script.
+These are all options associated with the <code>sbatch</code> command, you can look them up using the manual: <code>man sbatch</code>
     
+The last part of this input file deals with the actual execution of the software we would like to run. 
+
+First we use the export command to set the number of threads for each task. 
+Threading is another way of performing parallel calculations, for now we will not worry about threading.
+
     export OMP_NUM_THREADS=1
-    
-    #input=c60_scf-star1s
 
-    input=xspec
-    
-    echo ${SLURM_NTASKS}
-    
-    export KMP_AFFINITY=compact
+Setting <code>OMP_NUM_THREADS=1</code> will lead to the job only having parallel tasks
 
-    export I_MPI_PIN_DOMAIN=auto
-    
-    mpirun -np ${SLURM_NTASKS} $xs -inp $input'.pwi' > $input'.pwo'
+    module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
 
+We have seen the <code>module load</code> command, if we include this in the job script we will make sure that we keep a record of the version of the software we used to perform the calculation.
+    
+    mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
+
+Finally the <code>mpirun</code> command is used to execute the parallel job.
+Here <code>pw.x<code> is the part of the Quantum Espresso software suite that performs the DFT calculation. 
+It also has the associated option <code>-inp</code> which specifies where to read input from.
+Moreover, we use a <code>></code> to redirect the output into a new file <code>'diamond.pwo'</code>
