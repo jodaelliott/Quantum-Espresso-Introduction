@@ -13,9 +13,11 @@
 |                      |                                                          |                        |
 | <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
 
-# Som information about HPC
+# The HPC Facility
 
 ![Cluster Image](./Figures/clusterStructure/clusterStructure.001.png)
+
+# Batch Jobs on HPC
 
 # Getting set up on SCARF
 
@@ -66,7 +68,49 @@ To exit the cluster you can type
 
     $ exit
 
+If you exited, then log back into scarf
 
+    $ ssh fedid@ui1.scarf.rl.ac.uk
+
+Before we get started running some jobs, we need to create a space for our input files, output files and data.
+There are three main partitions on SCARF <code>/home</code> which we have seen, <code>/work4</code> and <code>/scratch</code>.
+
+ - The <code>/home</code> directory has limited space and should be used for storing important files, and software.
+ - The <code>/scratch</code> directory has much more space and can be used for calculations. However, files not used are removed automatically after 30-days
+ - The <code>/work4</code> directory also has a lot of space for storage, as well as a special area reserved for Diamond users
+
+We can go to the DLS directory within the work directory
+
+    $ cd /work4/dls/
+    $ ls -ltrh
+
+Each of the current Diamond Light Source users has a directory for their work.
+
+We can now make our own directory
+
+    $ mkdir myfedid
+    $ ls -ltrh
+
+By default we can see that the created directory has the permissions for personal (<b>r</b>)ead, (<b>w</b>)rite and e(<b>x</b>)ecute, group read and execute and all read and execute.
+
+    drwxr-xr-x 16 scarf1097 diag 4.0K Sep  6 09:56 myfedid
+
+If we plan to work on private materials, we might want to remove these permissions:
+
+    $ chmod o-rx nab23632
+
+This removes read and execute access to (o)ther user (in different groups), i.e. those outside of Diamond Light Source.
+
+    $ ls
+    drwxr-x--- 16 scarf1097 diag 4.0K Sep  6 09:56 myfedid
+
+    $ chmod g-rx nab23632
+    $ ls
+    drwx------ 16 scarf1097 diag 4.0K Sep  6 09:56 myfedid
+
+The second command shows how to remove access of other (g)roup members, i.e. other people from Diamond Light Source.
+
+    $ cd myfedid
 
 # The Job Script (Line by Line)
 
