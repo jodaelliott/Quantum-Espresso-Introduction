@@ -4,6 +4,7 @@
 | Command | Key Options | Description |
 | ------- | ----------- | ----------- |
 | <code>ssh</code>     | <code>-X</code> <code>-Y</code>                          | Access a remote machine |
+| <code>exit</code>    |                                                          | Quit the current session |
 | <code>scp</code>     |                                                          | Copy from a remote machine |
 | <code>module</code>  | <code>avail</code> <code>spider</code>                   | Search for availavble software |
 |                      | <code>load</code> <code>unload</code> <code>purge</code> | load or unload software |
@@ -12,18 +13,29 @@
 | <code>scancel</code> |                                                          | Cancel a queued/running job |
 |                      |                                                          |                        |
 | <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
+|                      |                                                          |                        |
+| <code>chmod</code>   | <code>uga</code> <code>rwx<code> <code>+-</code>         | Alter file permissions |
+| <code>ln</code>      | <code>-s</code>                                          | Create a link to a file or directory |
+| <code>tar</code>     | <code>-c</code> <code>-x</code> <code>-z</code>          | (Un)archive a folder |
+| <code>gzip</code>    |                                                          | Compress a file |
+| <code>gunzip</code>  |                                                          | Decompress a compressed file |
 
 # The HPC Facility
 
 ![Cluster Image](./Figures/clusterStructure/clusterStructure.001.png)
-
-# Batch Jobs on HPC
 
 # Getting set up on SCARF
 
 You should apply for access to SCARF [here](https://www.scarf.rl.ac.uk/registration.html).
 
 ### Connecting to scarf
+
+| Command | Description |
+| ------- | ----------- |
+| <code>ssh</code>     | Access a remote machine |
+| <code>exit</code>    | Quit the current session |
+| <code>chmod</code>   | Alter file permissions |
+| <code>ln</code>      | Create a link to a file or directory |
 
 Open up a terminal window and use the new command <code>ssh</code> to initiate the connection
 
@@ -294,6 +306,13 @@ The variable <code>${SLURM_NTASKS}</code> is an environment variable that automa
 
 # Sending and Receiving Data from the Cluster
 
+| Command | Description |
+| ------- | ----------- |
+| <code>scp</code>     | Copy from a remote machine |
+| <code>tar</code>     | (Un)archive a folder |
+| <code>gzip</code>    | Compress a file |
+| <code>gunzip</code>  | Decompress a compressed file |
+
 Copying files to and from the cluster is very similar to the <code>cp</code> we saw in the last lecture.
 Instead of <code>cp</code> we must use a secure copy
 
@@ -320,10 +339,10 @@ Moving folders between systems is slightly different, first we must create a 'ta
     $ ssh myfedid@ui1.scarf.rl.ac.uk
     $ cd /work4/dls/myfedid/
     $ tar -cvf introToScarf01.tar ./introToScarf01
-    $ ls
+    $ ls -ltrh
     -rw-r--r-- 1 scarf1097 diag  14M Oct  4 11:00 introToScarf01.tar
     $ gzip introToScarf01.tar
-    $ ls
+    $ ls -ltrh
     -rw-r--r-- 1 scarf1097 diag  12M Oct  4 11:00 introToScarf01.tar.gz
 
 Here we have first created the archive with the command <code>tar</code>. 
@@ -335,14 +354,21 @@ Now we can log out of scarf and secure copy the archive we just created
 
     $ exit
     $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/myfedid/introToScarf01.tar.gz .
-    $ ls
+    $ ls -ltrh
     -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
 
 Finally, we can use the <code>tar</code> command to simultaneously decompress and unarchive the tarball we created.
 
     $ tar -zxvf introToScarf01.tar.gz
-    $ ls 
+    $ ls -ltrh
     drwxr-xr-x.  3 nab23632 nab23632 4.0K Oct  4 10:59 introToScarf01
     -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
 
-    
+Another way to do this in two steps would have been
+
+    $ gunzip introToScarf01.tar.gz
+    $ ls -ltrh
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar 
+    $ tar -zxvf introToScarf01.tar
+
+
