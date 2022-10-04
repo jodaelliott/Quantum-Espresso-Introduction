@@ -291,3 +291,58 @@ Here <code>pw.x</code> is the part of the Quantum Espresso software suite that p
 It also has the associated option <code>-inp</code> which specifies where to read input from.
 Moreover, we use a <code>></code> to redirect the output into a new file <code>'diamond.pwo'</code>
 The variable <code>${SLURM_NTASKS}</code> is an environment variable that automatically contains the correct number of tasks we want to run with.
+
+# Sending and Receiving Data from the Cluster
+
+Copying files to and from the cluster is very similar to the <code>cp</code> we saw in the last lecture.
+Instead of <code>cp</code> we must use a secure copy
+
+Lets disconnect from SCARF and copy the job file to our local machine
+
+    $ exit
+    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/shared/introToScarf01/job.sh .
+    myfedid@ui1.scarf.rl.ac.uks password: 
+    job.sh                                      100%  305    31.1KB/s   00:00
+    $ ls -ltrh
+    -rw-r--r--.  1 nab23632 nab23632  305 Oct  4 10:51 job.sh
+
+Notice the syntax for the <code>scp</code> command, we must provide the address of the cluster followed by <code>:</code> and then the path to the file we would like to copy.
+Finally I use a <code>.</code> to put the file in the current working directory.
+
+Copying in the opposite direction is the same:
+
+    $ scp ./job.sh myfedid@ui1.scarf.rl.ac.uk:
+
+Here since I didnt specify a path, the job.sh will be copied to my home directory on SCARF.
+
+Moving folders between systems is slightly different, first we must create a 'tarball', this is an archived (and possibly compressed) version of the folder that one prepared can be sent between systems.
+
+    $ ssh myfedid@ui1.scarf.rl.ac.uk
+    $ cd /work4/dls/myfedid/
+    $ tar -cvf introToScarf01.tar ./introToScarf01
+    $ ls
+    -rw-r--r-- 1 scarf1097 diag  14M Oct  4 11:00 introToScarf01.tar
+    $ gzip introToScarf01.tar
+    $ ls
+    -rw-r--r-- 1 scarf1097 diag  12M Oct  4 11:00 introToScarf01.tar.gz
+
+Here we have first created the archive with the command <code>tar</code>. 
+We first provided the name of the <code>.tar</code> file that we wanted to create, then the folder that we wanted to build the archive from.
+Next we used the <code>gzip</code> command to zip (compress) the archive we had created.
+By compressing the file we make it smaller and therefore it is faster to transfer it between networks.
+
+Now we can log out of scarf and secure copy the archive we just created
+
+    $ exit
+    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/myfedid/introToScarf01.tar.gz .
+    $ ls
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
+
+Finally, we can use the <code>tar</code> command to simultaneously decompress and unarchive the tarball we created.
+
+    $ tar -zxvf introToScarf01.tar.gz
+    $ ls 
+    drwxr-xr-x.  3 nab23632 nab23632 4.0K Oct  4 10:59 introToScarf01
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
+
+    
