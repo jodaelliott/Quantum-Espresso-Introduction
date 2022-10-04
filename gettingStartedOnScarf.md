@@ -119,7 +119,83 @@ Now that we have a directory to work in, we can create a soft link (shortcut) to
 
     $ cd myfedid
 
+The final thing that we will do at this point is copy the material we will use to practice submitting jobs to the cluster.
+This will follow the same principles as in the last lecture
 
+    $ cp -r /work4/dls/shared/introToScarf01 .
+    $ ls -ltrh
+    drwxr-xr-x 3 scarf1097 diag 4.0K Oct  4 10:00 introToScarf01
+    $ cd introToScarf01
+    $ ls -ltrh
+    -rw-r--r-- 1 scarf1097 diag  29K Oct  3 22:03 C.wfc
+    -rw-r--r-- 1 scarf1097 diag 798K Oct  4 09:54 C.pbesol-n-rrkjus_gipaw.UPF
+    -rw-r--r-- 1 scarf1097 diag 3.6K Oct  4 09:55 c60_scf.pwi
+    -rw-r--r-- 1 scarf1097 diag  305 Oct  4 09:57 job.sh
+
+Inside the folder you will find four text files.
+Like last time, the <code>.pwi</code> is an input file for quantum Espresso, we will look at this in more detail next time.
+The <code>C.wfc</code> and <code>C.pbesol-n-rrkjus_gipaw.UPF</code> are also read by quantum espresso.
+The file <code>job.sh</code> is the script we will use to submit the job to the scheduler for queuing.
+
+# Submitting Batch Jobs
+
+| Command | Description |
+| ------- | ----------- |
+| <code>sbatch</code> | Submit a job to the queue |
+| <code>squeue</code> | Check the status of the queue |
+| <code>scancel</code> | Cancel a job that has been submitted |
+
+## What is job submission
+
+Typically , there are a lot more jobs requested of the cluster than there are available resources, consequently the cluster uses a schduler to create a queue.
+As a result, every user of the clusterwill get a fair share of the compute time based on the jobs that they have submitted.
+
+Key principles ([from SCARF help page](https://www.scarf.rl.ac.uk/jobs.html#hints-and-tips))
+
+- Do not try to second guess the scheduler! Submit all of your jobs when you want to run them and let it figure it out for you. You will get a fair share, and if you don’t then we need to adjust the scheduler.
+- Give the scheduler as much information as possible. There are a number of optional parameters (see later) such as job length, and if you put these in then you have an even better chance of getting your jobs run.
+- It is very difficult for one user to monopolise the cluster, even if they submit thousands of jobs. The scheduler will still aim to give everyone else a fair share, so long as there are other jobs waiting to be run.
+
+It is possible to submit a job from the commandline directly using the <code>sbatch</code> command, however it can be in the long term to write a script to (i) keep track of all of the job options (ii) more easily build in complexity to the job.
+
+To submit the job, we do not execute the script, rather we provide the script as an argument to the <code>sbatch</code> command.
+
+    $ sbatch job.sh
+    Submitted batch job 714312
+
+To check the status of our job in the queue we can use the command <code>squeue</code>
+
+    $ squeue
+
+From the output of <code>squeue</code> you can get an idea of how over subscribed the resources are.
+The output is organised into columns:
+
+    JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+    714215     scarf CaCl2_di scarf100 PD       0:00      2 (Priority)
+    714269      ibis jobscrip scarf261  R   12:47:05      1 cn244
+
+The <code>JOBID</code> is the unique code assigned to identify the job.
+The <code>PARTITION</code> tells us which part of the cluster the job will be run on.
+The <code>NAME</code> is a user defined identification for the job.
+The <code>USER</code> specifies the user who lauched the JOB.
+<code>ST</code> is short for status. Jobs which are running have the status <code>R</code>, jobs which are queued have the status <code>PD</code>.
+Once the job is running <code>TIME</code> reports the time elapsed since the start of the job.
+Finally <code>NODELIST</code> reports exactly which nodes in the cluster are running the job.
+
+Clearly, there is a lot of information printed when we type the <code>squeue</code> command, it can be more instructive to use the option <code>-u</code>
+
+    $ squeue -u scarf1097
+    JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+    714313     scarf   job.sh scarf109 PD       0:00      1 (Priority)
+
+This tells me that the job belonging to me is currently queued. 
+If I have multiple jobs, all of them would be reported to me.
+
+If there is a mistake in a job, or if I want to change something, at any point while the job is queued or running I can use <code>scancel</code>
+
+    $ scancel 714313
+
+This will delete the job from the queue.
 
 # The Job Script (Line by Line)
 
