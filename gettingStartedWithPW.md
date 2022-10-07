@@ -27,8 +27,19 @@ The second Namelist is the <code>&SYSTEM</code>, which describes the material be
 calculated.
 
     &SYSTEM
-       ibrav = ! index of the bravais lattice
+       ibrav   = ! index of the bravais lattice
+       nat     = ! Number of atoms
+       ntyp    = ! Number of different Atomic types
+       ecutwfc = ! Energy cutoff applied to basis set
+       nspin   = ! Spin polarization or non-collinear magnetism
     /
+
+The third Namelist is <code>&ELECTRONS</code> which introduces keywords that control the
+self consistency cycle.
+
+    &ELECTRONS
+    /
+
 
 ## The <code>pw.x</code> Output File
 
