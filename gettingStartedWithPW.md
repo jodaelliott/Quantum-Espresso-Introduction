@@ -81,7 +81,37 @@ be equal to <code>ntyp</code> set in the <code>&SYSTEM</code> <code>Namelist</co
     label1 atomic_mass pseudopotential
     label2 atomic_mass pseudopotential
 
+We also have to provide the coordinates of the atoms in the system.
+These can be given to <code>pw.x</code> in xyz format in units of Angstrom, Bohr radius
+and as a fraction of the lattice parameter.
+
+    ATOMIC_POSITIONS {Unit}
+    label1 x1 y1 z1
+    label1 x2 y2 z2
+    label1 x3 y3 z3
+    label2 x4 y4 z4
+
+If we do not use a prescribed Bravais lattice through the <code>ibrav</code> keyword in
+the <code>&SYSTEM</code> <code>Namelist</code>, then we must provide details on the unit
+cell. Similar to the atomic coordinates, the cell can be specified with units Angstrom,
+Bohr radius and as a fraction of the lattice constant.
+
+    CELL_PARAMETERS {Unit}
+    a1 a2 a3
+    b1 b2 b3
+    c1 c2 c3
+
+Lastly, we must describe the sampling of the reciprocal lattice. 
+This is done using the <code>K_POINTS</code> <code>Card</code>.
+For the standard DFT calculations we will do, it is best to use an automatically generated
+Gamma centered grid
+
+    K_POINTS {Automatic}
+    k1 k2 k3 0 0 0
+
 ## Running <code>pw.x</code>
+
+Lets put together an input file from scratch and run <code>pw.x</code> live.
 
 ## The <code>pw.x</code> Output File
 
