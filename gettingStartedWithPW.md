@@ -12,12 +12,22 @@
 
 ## The <code>pw.x</code> Input File
 
+The first Namelist is <code>&CONTROL</code>, which deals with <em>administrative</em>
+variables
+
     &CONTROL
-       calculation = ''
-       prefix      = ''
-       outdir      = ''
-       psuedodir   = ''
-       
+       calculation = '' ! The type of job requested
+       prefix      = '' ! The name of the files created
+       outdir      = '' ! Where metadata is stored
+       psuedodir   = '' ! The location of the pseudopotentials
+       verbosity   = '' ! How detailed is the output from the code
+    /
+
+The second Namelist is the <code>&SYSTEM</code>, which describes the material being
+calculated.
+
+    &SYSTEM
+       ibrav = ! index of the bravais lattice
     /
 
 ## The <code>pw.x</code> Output File
