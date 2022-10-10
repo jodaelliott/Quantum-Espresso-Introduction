@@ -19,6 +19,8 @@
 
 ![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.005.png)
 
+![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.006.png)
+
 ## Introduction to X-Ray Spectroscopy in Quantum ESPRESSO
 
 ![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.001.png)
