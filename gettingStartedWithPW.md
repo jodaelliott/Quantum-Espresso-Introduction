@@ -196,6 +196,100 @@ These commands should be at least a little bit familiar from the job script last
 
 ## The <code>pw.x</code> Output File
 
+The Output File header
+
+     Program PWSCF v.6.5 starts on 10Oct2022 at 16: 2:44 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org, 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+The compute settings and input file
+
+     Parallel version (MPI), running on     4 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       4
+     Reading input from silicon.pwi
+
+The self-consistency iterations
+
+     iteration #  1     ecut=    40.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  1.00E-02,  avg # of iterations =  2.0
+
+     Threshold (ethr) on eigenvalues was too large:
+     Diagonalizing with lowered threshold
+
+     Davidson diagonalization with overlap
+     ethr =  8.51E-04,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is        0.5 secs
+
+     total energy              =     -20.39192174 Ry
+     Harris-Foulkes estimate   =     -20.40782868 Ry
+     estimated scf accuracy    <       0.06702974 Ry
+
+     iteration #  2     ecut=    40.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  8.38E-04,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is        0.5 secs
+
+     total energy              =     -20.39429182 Ry
+     Harris-Foulkes estimate   =     -20.39448746 Ry
+     estimated scf accuracy    <       0.00338013 Ry
+
+     iteration #  3     ecut=    40.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  4.23E-05,  avg # of iterations =  2.5
+
+     total cpu time spent up to now is        0.5 secs
+
+     total energy              =     -20.39488490 Ry
+     Harris-Foulkes estimate   =     -20.39492567 Ry
+     estimated scf accuracy    <       0.00012018 Ry
+
+The band information
+
+          k = 0.0000 0.0000 0.0000 (  1243 PWs)   bands (ev):
+
+    -5.8129   5.8974   5.8974   5.8974
+
+     occupation numbers 
+     1.0000   1.0000   1.0000   1.0000
+
+          k =-0.3333 0.3333-0.3333 (  1194 PWs)   bands (ev):
+
+    -4.4843   0.6600   4.9176   4.9176
+
+     occupation numbers 
+     1.0000   1.0000   1.0000   1.0000
+
+          k = 0.0000 0.6667 0.0000 (  1218 PWs)   bands (ev):
+
+    -3.9713   0.9127   3.5484   3.5484
+
+     occupation numbers 
+     1.0000   1.0000   1.0000   1.0000
+
+          k = 0.6667-0.0000 0.6667 (  1196 PWs)   bands (ev):
+
+    -2.6689  -0.7841   1.6391   3.8425
+
+     occupation numbers 
+     1.0000   1.0000   1.0000   1.0000
+
+     highest occupied level (ev):     5.8974
+
+The total energy 
+
+     !    total energy              =     -20.39492696 Ry
+
 ## Pseudopotentials
 
 # Optimization with <code>pw.x</code>
