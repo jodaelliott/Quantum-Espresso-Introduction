@@ -123,7 +123,7 @@ Lets put together an input file from scratch and run <code>pw.x</code> live.
 
 # Optimization with <code>pw.x</code>
 
-![WORKFLOW](Figures/espressoWorkFlows/espressoWorkFlows.002.png)
+![OPTIMIZATION](Figures/espressoWorkFlows/espressoWorkFlows.003.png)
 
 ## Basis set optimization
 
