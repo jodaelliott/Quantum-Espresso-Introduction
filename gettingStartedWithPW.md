@@ -121,6 +121,10 @@ Lets put together an input file from scratch and run <code>pw.x</code> live.
 
 ## Pseudopotentials
 
+# Optimization with <code>pw.x</code>
+
+![WORKFLOW](Figures/espressoWorkFlows/espressoWorkFlows.002.png)
+
 ## Basis set optimization
 
 ## <b>k</b>-point Optimization 
