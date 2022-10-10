@@ -10,6 +10,10 @@
 
 ## Introduction to X-Ray Spectroscopy in Quantum ESPRESSO
 
+![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.001.png)
+
+![WORKFLOW](Figures/espressoWorkFlows/espressoWorkFlows.002.png)
+
 ## The <code>pw.x</code> Input File
 
 Now we can look at the input file, which will be read by the <code>pw.x</code>.
