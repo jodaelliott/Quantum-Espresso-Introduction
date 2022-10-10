@@ -13,6 +13,12 @@
 | <code>mpirun</code> | <code>-np</code> | Run a job with parallel processes |
 | <code>tee</code>    |   | Simultaneously print output to terminal and capture to file |
 
+## What is Density Functional Theory, Why Should we use it?
+
+![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.004.png)
+
+![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.005.png)
+
 ## Introduction to X-Ray Spectroscopy in Quantum ESPRESSO
 
 ![ESPRESSO](Figures/espressoWorkFlows/espressoWorkFlows.001.png)
