@@ -134,7 +134,12 @@ To understand why we should do this optimisation we can look at what the basis s
 
 $$ \psi_i(\mathbf{r}) = \sum^\infty C_{i} \phi_{i}(\mathbf{r}) $$
 
+a representation of the wavefunction $\psi_i$ as an infinite expansion of known functions
+$\phi_i$, in our case those known functions are plane waves.
+Practically, we cannot achieve an infinite expansion, so we have to truncate the basis
+set, we do this by imposing a cutoff on the kinetic energy of the plane waves.
 
+To make sure that we find an accurate solution, in optimal time we must perform a series 
 
 ## <b>k</b>-point Optimization 
 
