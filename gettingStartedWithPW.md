@@ -127,6 +127,15 @@ Lets put together an input file from scratch and run <code>pw.x</code> live.
 
 ## Basis set optimization
 
+First lets look at the first part of the optimization, which is the optimization of the
+basis set.
+
+To understand why we should do this optimisation we can look at what the basis set is
+
+$$ \psi_i(\mathbf{r}) = \sum^\infty C_{i} \phi_{i}(\mathbf{r}) $$
+
+
+
 ## <b>k</b>-point Optimization 
 
 ## Conceptual Gotchas
