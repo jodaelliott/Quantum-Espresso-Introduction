@@ -7,6 +7,11 @@
 | ------- | ----------- | ----------- |
 | <b>QE</b> |  |  |
 <code>pw.x</code> | <code>-inp</code> <code>-npools</code> | Main executable for DFT in Quantum ESPRESSO |
+| <b>Other</b> |  |
+| <code>module</code> | <code>load</code> | load a particular module to the current environment |
+| <code>export</code> | | export an environment variable
+| <code>mpirun</code> | <code>-np</code> | Run a job with parallel processes |
+| <code>tee</code>    |   | Simultaneously print output to terminal and capture to file |
 
 ## Introduction to X-Ray Spectroscopy in Quantum ESPRESSO
 
@@ -116,6 +121,78 @@ Gamma centered grid
 ## Running <code>pw.x</code>
 
 Lets put together an input file from scratch and run <code>pw.x</code> live.
+
+First we can login to SCARF and navigate to the directory we created for our work last time
+
+    $ ssh myfedidi@ui1.scarf.rl.ac.uk
+    $ cd myfedid
+
+Next we can create a directory for the first example we will run
+
+    $ mkdir espresso_example
+    $ espresso_example
+
+Now we can begin to write the input file, I will use <code>nano</code>, which is a basic commandline text editor
+
+    $ nano silicon.pwi
+
+    &CONTROL
+       calculation = 'scf' ! The type of job requested
+       prefix      = 'si' ! The name of the files created
+       outdir      = './OUT' ! Where metadata is stored
+       pseudo_dir   = '/work4/dls/shared/pslibrary_pbe' ! The location of the pseudopotentials
+       verbosity   = 'high' ! How detailed is the output from the code
+    /
+    
+    &SYSTEM
+       ibrav     =  0    ! index of the bravais lattice
+       celldm(1) = 10.40 ! Lattice parameter in (Bohr Radius)
+       nat       =  2    ! Number of atoms
+       ntyp      =  1    ! Number of different Atomic types
+       ecutwfc   = 40    ! Energy cutoff applied to basis set
+       nspin     =  1    ! Spin polarization or non-collinear magnetism
+    /
+    
+    &ELECTRONS
+    /
+    
+    ATOMIC_SPECIES
+    Si 28.086 Si.pbe-nl-rrkjus_gipaw.UPF
+    
+    ATOMIC_POSITIONS {alat}
+    Si 0.00 0.00 0.00
+    Si 0.25 0.25 0.25
+    
+    K_POINTS {automatic}
+    3 3 3 0 0 0
+    
+    CELL_PARAMETERS {alat}
+     -0.50 0.00 0.50
+      0.00 0.50 0.50
+     -0.50 0.50 0.00
+
+To exit you can use the key combination <code>CTRL+X</code>
+
+Some thing to note before we move on with running the calculation: There are pseudopotential files for most elements in the directory <code>/work4/shared/</code>, so this can be set for the keyword <code>pseudo_dir</code>. To find the name of the pseudopotential for the element you require you can use <code>ls</code> on this directory.
+
+As this is a very small, and very short calculation we are going to run it live (I do not recommend doing this under any other circumstances).
+
+    $ module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
+    $ export OMP_NUM_THREADS=4
+    $ mpirun -np 4 pw.x -inp silicon.pwi | tee silicon.pwo
+    ....
+    =------------------------------------------------------------------------------=
+       JOB DONE.
+    =------------------------------------------------------------------------------=
+
+First we load the relevant module to have the quantum ESPRESSO executable files in our PATH.
+Next to make sure that we localise the small job we set the environment variable <code>OMP_NUM_THREADS</code> to 1
+Finally, we launch the <code>pw.x</code> code using the <code>mpirun</code> command. We ask for 4 processes using the option <code>-np</code>.
+
+The <code>pw.x</code> requires and input file for execution, we use the flag <code>-inp</code> to provide one.
+Finally we use the <code>tee</code> command to capture the output in the new file <code>silicon.pwo</code>.  <code>tee</code> is particularly useful in this case because it also prints the output to the terminal, unlike a regular redirect.
+
+These commands should be at least a little bit familiar from the job script last week, even if we didnt go over them explicitly.
 
 ## The <code>pw.x</code> Output File
 
