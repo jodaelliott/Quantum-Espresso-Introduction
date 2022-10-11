@@ -470,16 +470,16 @@ We can use a <code>for</code> loop to scan each of the files one-by-one for the 
 
 And for those of you that want to unpick a more complex series of commands:
 
-   $ a=`grep ! basis_120.pwo | awk '{print $5}'`; for i in $(seq 40 10 120); do grep ! "basis_$i.pwo" | awk -v a=$a -v i=$i '{printf("%5d %10.4e\n", i, 13.606*($5-a))}'; done
-   40 1.4653e+01
-   50 4.4050e+00
-   60 1.0791e+00
-   70 1.8350e-01
-   80 1.7399e-02
-   90 5.6374e-03
-  100 4.3652e-03
-  110 1.5632e-03
-  120 0.0000e+00
+    $ a=`grep ! basis_120.pwo | awk '{print $5}'`; for i in $(seq 40 10 120); do grep ! "basis_$i.pwo" | awk -v a=$a -v i=$i '{printf("%5d %10.4e\n", i, 13.606*($5-a))}'; done
+       40 1.4653e+01
+       50 4.4050e+00
+       60 1.0791e+00
+       70 1.8350e-01
+       80 1.7399e-02
+       90 5.6374e-03
+      100 4.3652e-03
+      110 1.5632e-03
+      120 0.0000e+00
     
 ## <b>k</b>-point Optimization 
 
