@@ -52,7 +52,7 @@ insert a comment.
        calculation = '' ! The type of job requested
        prefix      = '' ! The name of the files created
        outdir      = '' ! Where metadata is stored
-       psuedodir   = '' ! The location of the pseudopotentials
+       pseudo_dir   = '' ! The location of the pseudopotentials
        verbosity   = '' ! How detailed is the output from the code
     /
 
