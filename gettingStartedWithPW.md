@@ -12,6 +12,8 @@
 | <code>export</code> | | export an environment variable
 | <code>mpirun</code> | <code>-np</code> | Run a job with parallel processes |
 | <code>tee</code>    |   | Simultaneously print output to terminal and capture to file |
+| <code>nano</code>   |   | Commandline text editor |
+
 
 ## What is Density Functional Theory, Why Should we use it?
 
