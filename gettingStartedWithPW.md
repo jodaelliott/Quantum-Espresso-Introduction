@@ -347,14 +347,98 @@ basis set.
 
 To understand why we should do this optimisation we can look at what the basis set is
 
-$$ \psi_i(\mathbf{r}) = \sum^\infty C_{i} \phi_{i}(\mathbf{r}) $$
+$$ \psi_i(\mathbf{r}) = \sum^\infty C_{ji} \phi_{j}(\mathbf{r}) $$
 
 a representation of the wavefunction $\psi_i$ as an infinite expansion of known functions
 $\phi_i$, in our case those known functions are plane waves.
 Practically, we cannot achieve an infinite expansion, so we have to truncate the basis
 set, we do this by imposing a cutoff on the kinetic energy of the plane waves.
 
-To make sure that we find an accurate solution, in optimal time we must perform a series 
+To make sure that we find an accurate solution, in optimal time we must perform a series of calculations that check how a property (the total energy) changes when the sum increases.
+
+We will look at the case of IrO<sub>2</sub>, we can copy the folder to our working directory
+
+    $ cd
+    $ cd myfedid
+    $ cp -r /work4/dls/shared/introToScarf02 .
+    $ ls -ltrh
+    drwxr-xr-x 4 scarf1097 diag 4.0K Oct 11 09:55 introToScarf02
+     
+    $ cd introToScarf02/iro2_example_planewaves
+    $ ls -ltrh
+    drwxr-xr-x 2 scarf1097 diag 4.0K Oct 11 09:55 reference_output
+    -rw-r--r-- 1 scarf1097 diag  299 Oct 11 09:55 job.sh
+    -rw-r--r-- 1 scarf1097 diag  965 Oct 11 09:55 iro2.pwi
+
+    $ cat iro2.pwi
+    
+    &CONTROL
+       calculation      = 'scf'
+       title            = 'IrO2 Unit Cell'
+       verbosity        = 'high'
+       outdir           = 'tmp'
+       prefix           = 'iro2'
+       pseudo_dir       = '/work4/dls/shared/pslibrary_pbe'
+    /
+    &SYSTEM
+       ecutwfc          = ! This must be converged
+       ecutrho          = ! 10.*ecutwfc
+       starting_magnetization(1) = 0.0
+       starting_magnetization(2) = 0.0
+       nspin            = 2
+       ntyp             = 2
+       nat              = 6
+       ibrav            = 6
+       celldm(1)        = 8.5888
+       celldm(3)        = 0.7018701870187019
+       occupations      = 'smearing'
+       smearing         = 'mp'
+       degauss          = 0.005
+    /
+    &ELECTRONS
+       electron_maxstep = 100
+       conv_thr         = 1.D-7 
+    /
+    
+    ATOMIC_SPECIES
+     O   15.999 O.pbe-nl-rrkjus_gipaw.UPF 
+    Ir  192.217 Ir.pbe-n-rrkjus_gipaw.UPF 
+    
+    K_POINTS automatic
+    2 2 2 0 0 0
+    
+    ATOMIC_POSITIONS crystal
+    Ir 0.0000 0.0000 0.0000
+    Ir 0.5000 0.5000 0.5000
+     O 0.1916 0.8084 0.5000
+     O 0.3084 0.3084 0.0000
+     O 0.6916 0.6916 0.0000
+     O 0.8084 0.1916 0.5000
+    
+There are some key differences in this input file from the one that we saw before for Silicon
+
+| Keyword | Description |
+| ------- | ----------- |
+| title   | Gives the simulation a title in the output file |
+| starting_magnetization | When building the initial description, creates atom with spin up (1.0) spin down (-1.0) or no spin orientation (0.0) |
+| ecutrho | A similar parameter to <code>ecutwfc</code> for the expansion of the density | 
+| nspin   | Tells <code>pw.x</code> to perform a non-spin polarizaed (1), spin polarized (2) or non-collinear (4) calculation |
+| occupations | Whether to used fixed (1 or 0) or smeared (non integer) orbital occupations |
+| smearing | Method by which to smear orbital occupations |
+| degauss | Magnitude of smearing |
+| electron_maxstep | Maximum number of scf cycles |
+| conv_thr | Tolerance for convergence of scf loop |
+
+### HOMEWORK
+
+Use the job submission script to run the iro<sub>2</sub> job. 
+To start with use an <code>ecutwfc</code> of 40 Ry and <code>ecutrho</code> of 400 Ry.
+Systematically increase the wavefunction cutoff (and density cutoff) from 40 to 120 Ry.
+Look at the Total energy in the output file to determine when the calculation is converged.
+
+### 
+
+
 
 ## <b>k</b>-point Optimization 
 
