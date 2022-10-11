@@ -206,7 +206,19 @@ These commands should be at least a little bit familiar from the job script last
 
 ## The <code>pw.x</code> Output File
 
-The Output File header
+We have seen from the Silicon example, a lot of things are printed during the calculation.
+We already saw from the first lecture that this can be very difficult to parse and so we
+can use commands like <code>grep</code> and <code>awk</code> to extract the data we want.
+
+In fact, that command that we used will work directly on the output we just created:
+
+    grep 'scf accuracy' silicon.pwo | tail -n 14 | awk '{printf("%4d %15.5e\n",  NR, $5*13.605662285137)}' | tee finalScf.dat
+
+Now however, we can begin to look at the contents of the output file and start to look at
+everything that is being printed.
+
+The first section is the File header. This contains information on the code and the
+version you are using, as well as providing some references and helpful hyperlinks
 
      Program PWSCF v.6.5 starts on 10Oct2022 at 16: 2:44 
 
@@ -218,7 +230,12 @@ The Output File header
      in publications or presentations arising from this work. More details at
      http://www.quantum-espresso.org/quote
 
-The compute settings and input file
+Next the code reports on the compute settings and input file.
+This is a good way to check that <code>pw.x</code> has understood what we have asked for.
+
+For instance, in the example you shoud see that it is running in parallel with 4
+processors, this makes sence since in our run command we asked for <code>mpirun -np
+4</code>.
 
      Parallel version (MPI), running on     4 processors
 
@@ -226,7 +243,11 @@ The compute settings and input file
      R & G space division:  proc/nbgrp/npool/nimage =       4
      Reading input from silicon.pwi
 
-The self-consistency iterations
+Once the calculation starts the code prints out at each individual iteration the
+information about the self-consistency cycles.
+
+At the end of each iteration it reports the <code>total energy</code> and <code>scf
+accuracy</code>. These are the two main critera used to determine convergence.
 
      iteration #  1     ecut=    40.00 Ry     beta= 0.70
      Davidson diagonalization with overlap
@@ -264,7 +285,14 @@ The self-consistency iterations
      Harris-Foulkes estimate   =     -20.39492567 Ry
      estimated scf accuracy    <       0.00012018 Ry
 
-The band information
+Once the scf cycles are complete the code then reports information on the electronic
+structure it calculated.
+
+This includes things like computed magnetization, computed partial charges on each atom
+and the set of <b>k</b>-resolved band energies and their occupations.
+
+Notice that only the valence states are reported, this is because in the calculation the
+core states are replaced by pseudopotentials.
 
           k = 0.0000 0.0000 0.0000 (  1243 PWs)   bands (ev):
 
@@ -296,11 +324,17 @@ The band information
 
      highest occupied level (ev):     5.8974
 
-The total energy 
+This is typically the information that we want to know about our system. However,
+something else we may want to know (and we will need for the next section) is the final
+ total energy.
 
      !    total energy              =     -20.39492696 Ry
 
-## Pseudopotentials
+Helpfully, the total energy is printed with an <code>!</code>, which makes it very easy to
+find with the <code>grep</code> command
+
+    $ grep ! silicon.pwo
+    !    total energy              =     -20.39492696 Ry
 
 # Optimization with <code>pw.x</code>
 
