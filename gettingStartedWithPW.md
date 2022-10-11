@@ -483,6 +483,21 @@ And for those of you that want to unpick a more complex series of commands:
     
 ## <b>k</b>-point Optimization 
 
+Because we are discritizing the (reciprocal) space where we do the calculation with a grid, we also have to check some property of the system we are interested in in changing with the spacing between grid points.
+
+In our calculation, these grid points are called <b>k</b>-points and the correspond to some point in the first Brillouin zone. Certain <b>k</b>-points have significant meaning, since they are high-symmetry points. All Brillouin zones contain the $\Gamma$ point at <code>0.0 0.0 0.0</code> in the reciprocal lattice.
+
+We control the density of grid points along each direction independendtly in the <code>K_POINTS</code> card
+
+Like we did for the basis we should increase the number of points in each direction checking how the total energy changes.
+
+If the system is isotropic in any direction (as it is in the x,y directions for IrO2) then we can use the same grid spacing.
+
+### HOMEWORK
+
+Repeat the process of convergence for the <b>k</b>-points in the <code>K_POINTS</code> card. It is only needed to check the x and z points since x and y are equivalent.
+
+
 ## Conceptual Gotchas
 
 ### Systems that work out of the box
