@@ -436,10 +436,51 @@ To start with use an <code>ecutwfc</code> of 40 Ry and <code>ecutrho</code> of 4
 Systematically increase the wavefunction cutoff (and density cutoff) from 40 to 120 Ry.
 Look at the Total energy in the output file to determine when the calculation is converged.
 
-### 
+### Solution
 
+    $ cd reference_output
+    ls -ltrh
+    total 1.3M
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_100.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_110.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_120.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_40.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_50.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_60.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_70.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_80.pwo
+    -rw-r--r-- 1 scarf1097 diag 41K Oct 11 09:55 basis_90.pwo
 
+We can use a <code>for</code> loop to scan each of the files one-by-one for the total energy that we want to look at
 
+    $ for i in 40 50 60 70 80 90 100 110 120;  # $i will have these values at each iteration
+    > do                                       # start the loop
+    > grep ! "basis_$i.pwo"
+    > done                                     # end the loop
+
+    !    total energy              =    -552.02236441 Ry
+    !    total energy              =    -552.77554884 Ry
+    !    total energy              =    -553.01999718 Ry
+    !    total energy              =    -553.08581783 Ry
+    !    total energy              =    -553.09802574 Ry
+    !    total energy              =    -553.09889017 Ry
+    !    total energy              =    -553.09898367 Ry
+    !    total energy              =    -553.09918961 Ry
+    !    total energy              =    -553.09930450 Ry
+
+And for those of you that want to unpick a more complex series of commands:
+
+   $ a=`grep ! basis_120.pwo | awk '{print $5}'`; for i in $(seq 40 10 120); do grep ! "basis_$i.pwo" | awk -v a=$a -v i=$i '{printf("%5d %10.4e\n", i, 13.606*($5-a))}'; done
+   40 1.4653e+01
+   50 4.4050e+00
+   60 1.0791e+00
+   70 1.8350e-01
+   80 1.7399e-02
+   90 5.6374e-03
+  100 4.3652e-03
+  110 1.5632e-03
+  120 0.0000e+00
+    
 ## <b>k</b>-point Optimization 
 
 ## Conceptual Gotchas
