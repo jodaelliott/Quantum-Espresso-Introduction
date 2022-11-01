@@ -38,3 +38,107 @@ Highlight <code>silicon.pwi</code> and from the <code>Choose parser</code> drop 
 |                   | <code>Show Bonds</code> | Shows <em>bonds</em> within a certain cutoff | 
 |<code>Edit</code>  | <code>Edit Cell</code>  | Displays and allows manipulation of the simulation cell (box) |
 
+# In the python environment
+
+Another useful thing we can do with ASE is setup a quantum espresso input file directly from a structure file (such as a <code>.cif</code>)
+
+To do this we must either prepare a python script, or use an interactive python shell.
+
+    $ python
+
+A list of all of the different modules available with ASE can be found within the [documentation](https://wiki.fysik.dtu.dk/ase/ase/ase.html)
+
+To convert between one format and another we will need access to he (I)nput/(O)uput [IO modules](https://wiki.fysik.dtu.dk/ase/ase/io/io.html). 
+ASE comes with a function for reading and a function for writing files.
+So we can directly import those modules ready for us to use.
+
+    >>> from ase.io import read, write
+
+Next we can directly read the structure from the <code>.cif</code> file using the read function.
+In its most basic use, the read function takes as argument the filename, then we can also specify the format of the file with the <code>format</code> argument.
+You will notice, this is analogous to the way that we opened the Quantum Espresso file with the <code>ase gui</code>
+
+    >>> a = read('silicon.cif', format='cif')
+
+Now we can use the <code>write<code> function to immediately write a new file, which contains the structure in Quantum Espresso format.
+The <code>write</code> function takes as argument (in this order) the name of the file we will write, the structure (which is currently stored in <code>a</code> and the output format of the file written:
+
+    >>> b = write('silicon_new.pwi', a, format='espresso-in')
+
+Open a new terminal and cat the new file <code>silicon_new.pwi</code>
+
+    $ cat silicon_new.pwi 
+    &CONTROL
+    /
+    &SYSTEM
+       ntyp             = 1
+       nat              = 2
+       ibrav            = 0
+    /
+    &ELECTRONS
+    /
+    &IONS
+    /
+    &CELL
+    /
+    
+    ATOMIC_SPECIES
+    Si 28.085 None
+    
+    K_POINTS gamma
+    
+    CELL_PARAMETERS angstrom
+    3.89152000000000 0.00000000000000 0.00000000000000
+    1.94576000000000 3.37015517933522 0.00000000000000
+    1.94576000000000 1.12338505977841 3.17741277461186
+    
+    ATOMIC_POSITIONS angstrom
+    Si 0.0000000000 0.0000000000 0.0000000000 
+    Si 5.8372800000 3.3701551793 2.3830595810 
+
+By default, the structure is printed using Angstrom, and with the three cell vectors.
+
+We can also include some of the simulation paramaters at this point, by creating a dictionary. 
+Note that we cannot include the pseudopotential directory in the dictionary, nor can we manipulate the CARDS.
+To do this you will hve to look further into the documentation.
+
+It is trivial to add paramaters to the namelists:
+
+    >>> espresso_params = espresso_params = {'calculation':'scf', 'outdir':'./TMP', 'pseudodir':'/work4/dls/shared/pslibrary_pbe', 'prefix':'Si', 'verbosity':'high', 'ecutwfc':40.}
+    >>> b = write('silicon_new.pwi', a, format='espresso-in', input_data=espresso_params)
+
+Now look at the input file again
+
+    $ cat silicon_new.pwi 
+    &CONTROL
+       calculation      = 'scf'
+       verbosity        = 'high'
+       outdir           = './TMP'
+       prefix           = 'Si'
+    /
+    &SYSTEM
+       ecutwfc          = 40.0
+       ntyp             = 1
+       nat              = 2
+       ibrav            = 0
+    /
+    &ELECTRONS
+    /
+    &IONS
+    /
+    &CELL
+    /
+    
+    ATOMIC_SPECIES
+    Si 28.085 None
+    
+    K_POINTS gamma
+    
+    CELL_PARAMETERS angstrom
+    3.89152000000000 0.00000000000000 0.00000000000000
+    1.94576000000000 3.37015517933522 0.00000000000000
+    1.94576000000000 1.12338505977841 3.17741277461186
+    
+    ATOMIC_POSITIONS angstrom
+    Si 0.0000000000 0.0000000000 0.0000000000 
+    Si 5.8372800000 3.3701551793 2.3830595810 
