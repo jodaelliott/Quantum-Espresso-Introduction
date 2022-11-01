@@ -60,7 +60,7 @@ You will notice, this is analogous to the way that we opened the Quantum Espress
 
     >>> a = read('silicon.cif', format='cif')
 
-Now we can use the <code>write<code> function to immediately write a new file, which contains the structure in Quantum Espresso format.
+Now we can use the <code>write</code> function to immediately write a new file, which contains the structure in Quantum Espresso format.
 The <code>write</code> function takes as argument (in this order) the name of the file we will write, the structure (which is currently stored in <code>a</code> and the output format of the file written:
 
     >>> b = write('silicon_new.pwi', a, format='espresso-in')
