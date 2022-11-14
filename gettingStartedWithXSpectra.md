@@ -306,4 +306,258 @@ We can now plot and inspect the result of ths simulation
 
 # Example of polarization SiO<sub>2</sub>
 
+    $ cat SiO2.scf.in
+    &control
+       calculation='scf',
+       restart_mode='from_scratch',
+       pseudo_dir = '../pseudopotentials'
+       outdir='./TMP'
+       prefix='SiO2',
+       verbosity = 'high',
+    /
+    &system
+       ibrav = 4 ,
+       celldm(1)=9.28630318961333,
+       celldm(3)=1.10010,
+       nat = 9 ,
+       ntyp = 3 ,
+       nspin=1,
+       ecutwfc = 20.0,
+       ecutrho = 150.0,
+       nbnd=30,
+       smearing='mp',
+       occupations='smearing',
+       degauss=0.03,
+    /
+    &electrons
+       diagonalization='david',
+       conv_thr = 1.d-9,
+       mixing_mode = 'plain',
+       mixing_beta = 0.3,
+    /
+    
+    ATOMIC_SPECIES
+    Sih   28.086 Si_PBE_USPP.UPF
+    Si   28.086 Si_PBE_USPP.UPF
+    O  15.9994   O_PBE_USPP.UPF
+    
+    ATOMIC_POSITIONS crystal
+    Sih 0.47000000000000 0.000000000000 0.00000000000000
+    Si 0.00000000000000 0.47000000000000 0.6666666666666666
+    Si -0.47000000000000 -0.47000000000000 0.333333333333333
+    O 0.4131000000000000 0.267700000000000 0.11890000000000
+    O 0.267700000000000 0.4131000000000000 .54776666666666666666
+    O -0.267700000000000 0.1454000000000000 .78556666666666666666
+    O -0.4131000000000000 -0.1454000000000000 .21443333333333333333
+    O -0.1454000000000000 -0.4131000000000000 .45223333333333333333
+    O 0.1454000000000000 -0.267700000000000 -0.11890000000000
+    
+    K_POINTS automatic
+    2 2 2 0 0 0
+
+    $ cat SiO2.xspectra_dip_plane.in 
+    &input_xspectra
+       calculation='xanes_dipole'
+       prefix='SiO2',
+       outdir='./TMP'
+       xonly_plot=.false.,
+       xniter=2000,
+       xcheck_conv=50,
+       xepsilon(1)=1.0,
+       xepsilon(2)=1.0,
+       xepsilon(3)=0.0,
+       xiabs=1,
+       x_save_file='SiO2.xspectra_dip_plane.sav',
+       xerror=0.001,
+       xe0=0.60294618180436781,
+    / 
+
+    &plot
+       xnepoint=1000,
+       xgamma=0.8,
+       xemin=-10.0,
+       xemax=100.0,
+       terminator=.true.,
+       cut_occ_states=.true.,
+    /
+
+    &pseudos
+       filecore='Si.wfc',
+       r_paw(1)=2.4,
+    /
+
+    &cut_occ
+       cut_desmooth=0.1,
+    /
+    3 3 3 0 0 0
+
+    $ ../tools/upf2plotcore.sh ../pseudopotentials/Si_PBE_USPP.UPF > Si.wfc 
+
+    $ mpirun -np 1 xspectra.x -inp SiO2.xspectra_dip_plane.in
+    $ mv xanes.dat xanes_inplane.dat
+    $ gnuplot
+    gnuplot> plot 'xanes_inplane.dat'
+    
+    $ cat SiO2.xspectra_dip_c.in 
+    &input_xspectra
+       calculation='xanes_dipole'
+       prefix='SiO2',
+       outdir='./TMP'
+       xonly_plot=.false.,
+       xniter=2000,
+       xcheck_conv=50,
+       xepsilon(1)=0.0,
+       xepsilon(2)=0.0,
+       xepsilon(3)=1.0,   ! Polarization in orthogonal direction
+       xiabs=1,
+       x_save_file='SiO2.xspectra_dip_c.sav',
+       xerror=0.001,
+       xe0=0.60294618180436781,
+    /
+
+    &plot
+       xnepoint=1000,
+       xgamma=0.8,
+       xemin=-10.0,
+       xemax=100.0,
+       terminator=.true.,
+       cut_occ_states=.true.,
+    /
+
+    &pseudos
+       filecore='Si.wfc',
+       r_paw(1)=2.4,
+    /
+
+    &cut_occ
+       cut_desmooth=0.1,
+    /
+    3 3 3 0 0 0
+
+    $ mv xanes.dat xanes_c.dat
+    $ gnuplot
+    $ gnuplot> plot 'xanes_inplane.dat' w l lw 3; replot 'xanes_c.dat' w l lw 3
+
+# Magnetisim and NiO
+
+    $ cat NiO.scf.in
+    &control
+        calculation='scf',
+        pseudo_dir = '../pseudopotentials'
+        outdir='./TMP'
+        prefix='NiO',
+     /
+
+    &system
+       ibrav = 5 ,
+       celldm(1) =9.67155,
+       celldm(4)=0.8333333333,
+       nat = 4 ,
+       ntyp = 3 ,
+       nspin=2,
+       ecutwfc = 70.0,
+       starting_magnetization(1)=1.0,
+       starting_magnetization(2)=-1.0,
+       tot_magnetization = 0.0
+       nbnd=24,
+       lda_plus_u=.true.,
+       Hubbard_U(1)=7.6,
+       Hubbard_U(2)=7.6,
+    /
+
+    &electrons
+       mixing_beta = 0.3,
+    /
+
+    ATOMIC_SPECIES
+    Ni 58.6934   Ni_PBE_TM_2pj.UPF
+    NiB  58.6934   Ni_PBE_TM_2pj.UPF
+    O  15.9994   O_PBE_TM.UPF
+
+    ATOMIC_POSITIONS crystal
+    Ni  0.0000000000  0.0000000000  0.0000000000
+    NiB  -.5000000000  1.5000000000  -.5000000000
+    O  0.7500000000  -.2500000000  -.2500000000
+    O  -.7500000000  0.2500000000  0.2500000000
+
+    K_POINTS automatic
+    1 1 1 0 0 0
+
+    $ cat NiO.xspectra_dip.in
+    &input_xspectra
+       calculation='xanes_dipole',
+       prefix='NiO',
+       outdir='./TMP'
+       xniter=1000,
+       xcheck_conv=50,
+       xepsilon(1)=1.0,
+       xepsilon(2)=0.0,
+       xepsilon(3)=0.0,
+       xiabs=1,
+       x_save_file='NiO.xspectra_dip.sav',
+       xerror=0.001,
+    /
+    &plot
+       xnepoint=300,
+       xgamma=0.8,
+       xemin=-10.0,
+       xemax=20.0,
+       terminator=.true.,
+       cut_occ_states=.true.,
+    /
+    &pseudos
+       filecore='Ni.wfc',
+       r_paw(1)=1.5,
+    /
+    &cut_occ
+       cut_desmooth=0.1,
+    /
+    2 2 2 0 0 0
+
+    $ ../tools/upf2plotcore.sh ../pseudopotentials/Ni_PBE_TM_2pj.UPF > Ni.wfc
+    $ mpirun -np 1 xspectra.x -inp NiO.xspectra_dip.in
+    $ mv xanes.dat xanes_dip_gamma_1.5.dat
+    $ mpirun -np 1 xspectra.x -inp NiO.xspectra_dip_replot.in
+    $ mv xanes.dat xanes_dip_gamma_0.8.dat
+    $ gnuplot
+    gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_dip_gamma_0.8.dat' w l lw 3
+
+    $ cat cat NiO.xspectra_qua.in 
+    &input_xspectra
+       calculation='xanes_quadrupole',
+       prefix='NiO',
+       outdir='./TMP'
+       xniter=1000,
+       xcheck_conv=50,
+       xepsilon(1)=1.0,
+       xepsilon(2)=-1.0,
+       xepsilon(3)=0.0,
+       xkvec(1)=1.0,
+       xkvec(2)=1.0,
+       xkvec(3)=-1.0,
+       xiabs=1,
+       x_save_file='NiO.xspectra_qua.sav',
+       xerror=0.001,
+    /
+    &plot
+       xnepoint=300,
+       xgamma=0.8,
+       xemin=-10.0,
+       xemax=20.0,
+       terminator=.true.,
+       cut_occ_states=.true.,
+    /
+    &pseudos
+       filecore='Ni.wfc',
+       r_paw(2)=1.5,
+    /
+    &cut_occ
+       cut_desmooth=0.1,
+    /
+    2 2 2 0 0 0
+
+    $ mv xanes.dat xanes_quad_gamma_1.5.dat
+    $ gnuplot
+    gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_quad_gamma_1.5.dat' u 1:($2*15) w l lw 3
+
 
