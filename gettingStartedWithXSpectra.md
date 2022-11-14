@@ -7,9 +7,19 @@
 | <code>gnuplot</code>    | | Commandline based application for plotting data | 
 
 # Examples in this session:
-- Diamond
-- SiO<sub>2</sub>
-- NiO
+The aim of this sessions is to learn and to build up experience using the <code>xspectra.x</code> package.
+Specifically we will look at three seperate examples
+- <b>Diamond</b>
+   - The <code>xspectra</code> input file.
+   - How to quickly plot results while on SCARF
+   - Modifying the spectrum after its been calculated
+   - Adding the effects of a core-hole
+- <b>SiO<sub>2</sub></b>
+   - Factoring in crystal and polarization orientation
+- <b>NiO</b>
+   - Examples with spin-polarization/magnetization
+   - Spectral broadening
+   - Quadrupole transitions
 
 # Diamond and the XSpectra input file
 
