@@ -21,10 +21,34 @@ Specifically we will look at three seperate examples
    - Spectral broadening
    - Quadrupole transitions
 
-# Diamond and the XSpectra input file
+We will need three terminal windows for these examples.
+Two of them can be logged into scarf (one will be used for simulations the other for plotting results), the third will remain open on the nx server for visualization of any structures.
+
+We can log in to SCARF, go to the work directory and copy the examples from the shared folder:
+
+    $ ssh myfedid@ui1.scarf.rl.ac.uk
+    $ cd myfedid
+    $ cp -r /work4/dls/shared/introtoxspectra .
+
+# Example 1: Diamond and the XSpectra input file
 
 ## Workflow for Xspectra calculation revisited
 
+![WORKFLOW](Figures/espressoWorkFlows/espressoWorkFlows.002.png)
+
+In the first example, we will look at diamond
+
+    $ cd introtoxspectra/01_Diamond
+    $ ls -ltrh
+    total 120K
+    -rw-r--r-- 1 scarf1097 diag 508 Nov 14 21:47 diamond.scf.in
+    -rw-r--r-- 1 scarf1097 diag 470 Nov 14 21:47 diamond.xspectra.in
+    -rw-r--r-- 1 scarf1097 diag 546 Nov 14 21:47 diamond.xspectra_replot.in
+    -rw-r--r-- 1 scarf1097 diag 531 Nov 14 21:47 diamondh.scf.in
+    -rw-r--r-- 1 scarf1097 diag 549 Nov 14 21:47 diamondh.xspectra.in
+
+There are two sets of simulations contained in this folder: <code>diamond.\*</code> and <code>diamondh.\*</code>.
+We will start with the <code>diamond.scf.in</code>, which is the input for <code>pw.x</code>
 
     $ cat diamond.scf.in
     &control
@@ -61,7 +85,10 @@ Specifically we will look at three seperate examples
     K_POINTS automatic
     4 4 4 0 0 0
 
-Load modules, request resources, and run pw.x
+We can copy and visualize the structure locally.
+
+To run the DFT calculation, we can load the Quantum ESPRESSO modules, request resources with <code>salloc</code>, 
+and call the <code>pw.x</code> executable.
 
     $ module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
     $ salloc -p scarf -C amd
