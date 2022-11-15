@@ -484,10 +484,21 @@ In this example, the effect of the core-hole is very large.
 
     $ ../tools/upf2plotcore.sh ../pseudopotentials/Si_PBE_USPP.UPF > Si.wfc 
 
+Again, we can look at the radial part of the wavefunctions contained in the pseudopotential and that we will use as the
+initial state for the transition
+
+    $ gnuplot
+    gnuplot> set xrange [0:5]
+    gnuplot> plot 'Si.wfc'
+
+![WFC](Figures/si_wfc.png)
+
     $ mpirun -np 1 xspectra.x -inp SiO2.xspectra_dip_plane.in
     $ mv xanes.dat xanes_inplane.dat
     $ gnuplot
     gnuplot> plot 'xanes_inplane.dat'
+
+![WFC](Figures/si_inplane.png)
     
     $ cat SiO2.xspectra_dip_c.in 
     &input_xspectra
@@ -528,6 +539,8 @@ In this example, the effect of the core-hole is very large.
     $ mv xanes.dat xanes_c.dat
     $ gnuplot
     $ gnuplot> plot 'xanes_inplane.dat' w l lw 3; replot 'xanes_c.dat' w l lw 3
+
+![WFC](Figures/si_inplane_and_c.png)
 
 # Magnetisim and NiO
 
@@ -613,6 +626,8 @@ In this example, the effect of the core-hole is very large.
     $ gnuplot
     gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_dip_gamma_0.8.dat' w l lw 3
 
+![WFC](Figures/Ni_dip.png)
+
     $ cat cat NiO.xspectra_qua.in 
     &input_xspectra
        calculation='xanes_quadrupole',
@@ -651,4 +666,5 @@ In this example, the effect of the core-hole is very large.
     $ gnuplot
     gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_quad_gamma_1.5.dat' u 1:($2*15) w l lw 3
 
+![WFC](Figures/Ni_quad.png)
 
