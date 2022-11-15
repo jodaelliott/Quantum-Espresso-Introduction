@@ -85,7 +85,7 @@ We will start with the <code>diamond.scf.in</code>, which is the input for <code
     K_POINTS automatic
     4 4 4 0 0 0
 
-We can copy and visualize the structure locally.
+We can copy and visualize the structure locally using the <code>ase gui</code> from last time.
 
 To run the DFT calculation, we can load the Quantum ESPRESSO modules, request resources with <code>salloc</code>, 
 and call the <code>pw.x</code> executable.
@@ -128,6 +128,14 @@ Now that the SCF calculation is finished, lets look at the xspectra input file
 
 ## XSpectra Namelists
 
+The first thing to notice is that the format of the <code>xspectra.x</code>  input file is the same as the <code>pw.x</code>
+input file.
+
+There are <code>NAMELISTS</code>, which must be provided in order and one <code>CARD</code>. 
+The first <code>NAMELIST</code> is <code>&INPUT_XSPECTRA</code> which provides information on the 
+location of the ground state calculation, and controls the function of the <code>xspectra.x</code>calculation.
+In this way, it is analagous to the <code>&CONTROL</code> namelist, and even shares some keywords:
+
 <code>&INPUT_XSPECTRA</code>
 
     &input_xspectra
@@ -144,7 +152,7 @@ Now that the SCF calculation is finished, lets look at the xspectra input file
        xerror       = ! convergence threshold
     /
 
-The second namelist is <code>&PLOT</code>
+The second namelist is <code>&PLOT</code> which controls the final plot of the xanes spectrum.
 
     &plot
        xnepoint        = ! number of points in plot (energy resolution)
@@ -155,7 +163,8 @@ The second namelist is <code>&PLOT</code>
        cut_occ_states  = ! include/ remove occupied states from the spectrum
     /
 
-The third namelist is <code>&PSEUDOS</code>
+The third namelist is <code>&PSEUDOS</code>. This namelist tells <code>xspectra.x</code> where to read the core wavefunction (initial state) from,
+and how to reconstruct the core levels.
 
     &pseudos
        filecore   = ! File that contains the atomic core wavefunction (initial state)
@@ -165,20 +174,29 @@ The third namelist is <code>&PSEUDOS</code>
 
 Finally, there is the <code>&CUT_OCC</code> Namelist which helps to smoothly remove coccupied states from the spectrum.
 
-Typically, before we run the xspectra calculation we will have to extract the core wavefunction <code>filecore</code> from the pseudopotential.
+## Running XSpectra
+
+Typically, before we run the xspectra calculation we will have to extract the core wavefunction <code>filecore</code> from the pseudopotential we are using for the ground state DFT calculation.
+For future reference, this should always be the pseudopotential without a core-hole. Luckily there is a bash script <code>upf2plotcore.sh</code>, distributed with XSpectra we can use.
+A version of the script is included in the lectrure material.
 
     $ ../tools/upf2plotcore.sh ../pseudopotentials/C_PBE_TM_2pj.UPF > C.wfc
  
-We can plot the wavefunction file to make sure it makes sense
+We can plot the wavefunction file to make sure it makes sense, for this we will need to <code>ssh</code> to scarf with <code>x11</code> forwarding
 
+    $ ssh -Y myfedid@ui1.scarf.rl.ac.uk
+    $ cd myfedid/introtoxspectra/01_Diamond
     $ gnuplot
     gnuplot> plot 'C.wfc'
     gnuplot> set xrange [0:5]
     gnuplot> replot
 
-We can use the <code>xspectra</code> code to run the example
+If executed correctly should see a plot of the C 1s wavefunction.
+
+Now we can use the <code>xspectra.x</code> code to run the <code>diamond.xspectra.in
 
     $ mpirun -np 1 xspectra.x -inp diamond.xspectra.in
+        ...
 
         The spectrum is calculated using the following parameters:
         energy-zero of the spectrum [eV]:   13.3353
@@ -190,9 +208,15 @@ We can use the <code>xspectra</code> code to run the example
         Core level energy [eV]:  -284.2    
          (from electron binding energy of neutral atoms in X-ray data booklet)
 
+Unlike <code>pw.x</code>, the output of <code>xspectra.x</code> is significantly less interesting to look at.
+Provided that the (Lanczos) minimization algorithm manages to converge, the end of the <code>xspectra.x</code> will print some information about the spectrum.
+
+The spectrum is plotted (by default) in a new file called <code>xanes.dat</code>. Depending on the version of Quantum ESPRESSO, it is possible to set the name of this file in the input file.
+
      $ ls -ltrh
      -rw-r--r-- 1 scarf1097 diag 8.7K Nov 14 11:28 xanes.dat
 
+Let's inspect the spectrum that has been calculated:
 We can rename and plot the xanes spectrum
 
      $ mv xanes.dat xanes_no_corehole.dat
