@@ -579,7 +579,14 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
 
 # Magnetisim and NiO
 
+This final example will demonstrate how to compute the XANES spectrum in a slightly more complicated case. In this instance the simulation of the Ni K-edge in NiO, which involves not only dipole
+but quadrupole transitions in the pre edge region.
 
+Dipole and Quadrupole transitions are computed independently from one another in the <code>xspectra.x</code> and the combined spectrum can be obtained from summing the contributions together.
+
+In this example we will also see how to use the simplified rotationally invariant DFT + Hubbard U formulation within the <code>pw.x</code> code. DFT+U can be used to try to improve the description of overdelocalised orbitals in the standard DFT simulations. In this case, the d-orbitals of the Ni ions.
+
+Let us look at the NiO input file. 
 
     $ cat NiO.scf.in
     &control
@@ -624,6 +631,22 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
     K_POINTS automatic
     1 1 1 0 0 0
 
+We can see that the three lines:
+
+       lda_plus_u=.true.,
+       Hubbard_U(1)=7.6,
+       Hubbard_U(2)=7.6,
+
+completely define the DFT+U parameters for the two different Ni species in the simulation. The keyword <code>lda_plus_u</code> turns on and off the Hubbard correction.
+
+Another thing to note in this particular inpout file is the use of magnetism in the simulation. The keyword <code>tot_magnetization</code> sets the global magnetic moment of the simulation cell to 0, while the <code>starting_magnetization</code> keyword entries initialize the Ni sites in spin-up and spin-down configurations corresponding to an antiferromagnetic structure.
+
+We can run the DFT calculation as follows
+
+    $ mpirun -np 1 pw.x -inp NiO.scf.in
+
+The first Xspectra file is very similar to what we have already seen,
+
     $ cat NiO.xspectra_dip.in
     &input_xspectra
        calculation='xanes_dipole',
@@ -655,6 +678,10 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
     /
     2 2 2 0 0 0
 
+The replot file, which just reconstructs the xanes spectrum, changes the spectral broadening parameter <code>xgamma</code> from 0.8 to 1.5, in principle this value can be correlated to the core-hole lifetime, but it can also be instructive to tune it inorder to extract certain information from the spectrum.
+
+Let us generate the core wavefunction file, and run both simulations to assess the effect of broadening on the spectrum:
+
     $ ../tools/upf2plotcore.sh ../pseudopotentials/Ni_PBE_TM_2pj.UPF > Ni.wfc
     $ mpirun -np 1 xspectra.x -inp NiO.xspectra_dip.in
     $ mv xanes.dat xanes_dip_gamma_1.5.dat
@@ -664,6 +691,14 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
     gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_dip_gamma_0.8.dat' w l lw 3
 
 ![WFC](Figures/Ni_dip.png)
+
+As a final exercise we can look at the contribution of quadrupole transitions to the spectrum, this can be achieved by changing the type of <code>calculation</code> from <code>'xanes_dipole'</code> to <code>'xanes_quadrupole</code>:
+
+Within the quadrupole operator, there is also a term describing the wave vector. 
+As in the case of the polarization vector these are given to <code>xspectra.x</code> as three variables <code>xkvec</code>.
+One condition we must adhere to is that the two vectors <code>xepsilon</code> and <code>xkvec</code> are orthogonal.
+
+Lets look at the example
 
     $ cat cat NiO.xspectra_qua.in 
     &input_xspectra
@@ -699,6 +734,9 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
     /
     2 2 2 0 0 0
 
+We can run the quadrupole calculation in the same way as the dipole calculation and inspect the final spectrum:
+
+    $ mpirun -np 1 xspectra.x -inp NiO.xspectra_qua.in
     $ mv xanes.dat xanes_quad_gamma_1.5.dat
     $ gnuplot
     gnuplot> plot 'xanes_dip_gamma_1.5.dat' w l lw 3; replot 'xanes_quad_gamma_1.5.dat' u 1:($2*15) w l lw 3
