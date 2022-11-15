@@ -227,6 +227,8 @@ Since we are using version 6.7 we can manually rename and plot the xanes spectru
      $ gnuplot
      gnuplot> plot 'xanes_no_corehole.dat'
 
+![WFC](Figures/no_core_hole.png)
+
 XSpectra does not calculate absolute transition energies, rather the spectrum zero is set to the system Fermi level. 
 This means that at the low energy (less than zero) part of the spectrum we see features that should not be there,
 these correspond to transitions to the filled orbitals.
@@ -292,6 +294,8 @@ Again, we can move the new <code>xanes.dat</code> file manually and plot a compa
      $ mv xanes.dat xanes_no_corehole_no_occ_states.dat
      $ gnuplot
      gnuplot> plot 'xanes_no_corehole.dat'; replot 'xanes_no_corehole_no_occ_states.dat'
+
+![WFC](Figures/no_core_hole_cut_occ.png)
 
 What should be clear from the plot, is that the occupied states have now been removed from the spectrum and we are left with the theoretical XANES.
 
@@ -388,6 +392,8 @@ We can run, plot and inspect the result of this <code>xspectra.x</code> simulati
     gnuplot> plot 'xanes_corehole_no_occ_states.dat'; replot 'xanes_no_corehole_no_occ_states.dat'
 
 In this example, the effect of the core-hole is very large.
+
+![WFC](Figures/core_hole_cut_occ.png)
 
 # Example of polarization SiO<sub>2</sub>
 
