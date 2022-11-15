@@ -5,6 +5,10 @@
 |----------------|--------------------|--------------------|
 | <code>xspectra.x</code> | | Quantum espresso code for XANES simulations |
 | <code>gnuplot</code>    | | Commandline based application for plotting data | 
+| |<code>plot [u w l lw]</code> | Plot data from a file |
+| |<code>replot</code> | Update plot with new settings/ data |
+| |<code>set xrange []</code> | Define range on x axis |
+| |<code>set yrange []</code> | Define range on y axis |
 
 # Examples in this session:
 The aim of this sessions is to learn and to build up experience using the <code>xspectra.x</code> package.
@@ -397,6 +401,16 @@ In this example, the effect of the core-hole is very large.
 
 # Example of polarization SiO<sub>2</sub>
 
+One of the things that we have to be aware of is that in any given simulation is that the transition operator has defined polarization vector $\varepsilon$.
+
+This means that is the structure is anisotropic in any direction, then we will compute a different spectrum depending on the direction chosen for this polarization vector.
+In XSpectra, the polarization vector is controlled by the keyword <code>xepsilon</code>, which has three components, one for each cartesian or lattice direction.
+
+An important thing to note is that to repoduce the powder spectrum we should averaged over the three different polarization directions. 
+Moreover, the spectrum in any give polarization direction can be constructed from the linear combination of the spectra in each of these directions.
+
+The next example is a hexagonal SiO<sub>2</sub> lattice, which has in-plane isotropy, but out-of-plane anisotropy along the c axis.
+
     $ cat SiO2.scf.in
     &control
        calculation='scf',
@@ -446,6 +460,13 @@ In this example, the effect of the core-hole is very large.
     K_POINTS automatic
     2 2 2 0 0 0
 
+The ground state calculation with the absorbing atom specified can be carried out in the standard way that we have seen:
+
+    $ mpirun -np 1 pw.x -inp SiO2.scf.in
+
+Now lets look at the XSpectra input file, specifically where we define the direction of the polarization with <code>xepsilon(1)=1</code>, <code>xepsilon(2)=1</code> and <code>xepsilon(3)=0</code>
+This designates that the polarization vector is oriented in the crystal plane perpendicular to the c axis.
+
     $ cat SiO2.xspectra_dip_plane.in 
     &input_xspectra
        calculation='xanes_dipole'
@@ -482,10 +503,12 @@ In this example, the effect of the core-hole is very large.
     /
     3 3 3 0 0 0
 
+We have to extract the core wavefunctions from the pseudopotential file
+
     $ ../tools/upf2plotcore.sh ../pseudopotentials/Si_PBE_USPP.UPF > Si.wfc 
 
 Again, we can look at the radial part of the wavefunctions contained in the pseudopotential and that we will use as the
-initial state for the transition
+initial state for the transition. In this case, since the valence shell is larger than C, we see there are more core states in the pseudopotential.
 
     $ gnuplot
     gnuplot> set xrange [0:5]
@@ -493,12 +516,18 @@ initial state for the transition
 
 ![WFC](Figures/si_wfc.png)
 
+Now, let us run <code>xspectra.x</code> and look at the computed spectrum
+
     $ mpirun -np 1 xspectra.x -inp SiO2.xspectra_dip_plane.in
     $ mv xanes.dat xanes_inplane.dat
     $ gnuplot
     gnuplot> plot 'xanes_inplane.dat'
 
 ![WFC](Figures/si_inplane.png)
+
+It is worth pointing out that due to time constraints this simulation is massively underconverged and so the results are somewhat anomolous.
+If we now switch the polarization direction so that <code>xepsilon(1)=0</code>, <code>xepsilon(2)=0</code> and <code>xepsilon(3)=1</code>
+defines the direction orthogonal:
     
     $ cat SiO2.xspectra_dip_c.in 
     &input_xspectra
@@ -536,11 +565,17 @@ initial state for the transition
     /
     3 3 3 0 0 0
 
+And re run the XSpectra calculation (note that we have to run all parts of the xspectra calculation).
+
+    $ mpirun -np 1 xspectra.x -inp SiO2.xspectra_dip_c.in 
     $ mv xanes.dat xanes_c.dat
     $ gnuplot
     $ gnuplot> plot 'xanes_inplane.dat' w l lw 3; replot 'xanes_c.dat' w l lw 3
 
 ![WFC](Figures/si_inplane_and_c.png)
+
+There a large differences in the computed final spectrum in the difference directions.
+To convince yourselves of the in-plane isotropy try to compute two more spectra, with <code>xepsilon(1)=1</code>, <code>xepsilon(2)=0</code> and <code>xepsilon(3)=0</code> and <code>xepsilon(1)=1</code>, <code>xepsilon(2)=1</code> and <code>xepsilon(3)=0</code>. Do you expect these to be different of the same?
 
 # Magnetisim and NiO
 
