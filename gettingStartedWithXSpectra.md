@@ -579,6 +579,8 @@ To convince yourselves of the in-plane isotropy try to compute two more spectra,
 
 # Magnetisim and NiO
 
+
+
     $ cat NiO.scf.in
     &control
         calculation='scf',
