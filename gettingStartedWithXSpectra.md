@@ -172,12 +172,13 @@ and how to reconstruct the core levels.
        r_paw(2)   = ! as above for l=2
     /
 
-Finally, there is the <code>&CUT_OCC</code> Namelist which helps to smoothly remove coccupied states from the spectrum.
+Finally, there is the <code>&CUT_OCC</code> Namelist which helps to smoothly remove occupied states from the spectrum when <code>cut_occ_states=.TRUE.</code> in the <code>&PLOT</code> namelist.
 
 ## Running XSpectra
 
 Typically, before we run the xspectra calculation we will have to extract the core wavefunction <code>filecore</code> from the pseudopotential we are using for the ground state DFT calculation.
-For future reference, this should always be the pseudopotential without a core-hole. Luckily there is a bash script <code>upf2plotcore.sh</code>, distributed with XSpectra we can use.
+For future reference, this should always be the pseudopotential without a core-hole (since the excitation originates from a ground state wavefunction). 
+Luckily there is a bash script <code>upf2plotcore.sh</code>, distributed with XSpectra we can use.
 A version of the script is included in the lectrure material.
 
     $ ../tools/upf2plotcore.sh ../pseudopotentials/C_PBE_TM_2pj.UPF > C.wfc
@@ -212,21 +213,28 @@ Unlike <code>pw.x</code>, the output of <code>xspectra.x</code> is significantly
 Provided that the (Lanczos) minimization algorithm manages to converge, the end of the <code>xspectra.x</code> will print some information about the spectrum.
 
 The spectrum is plotted (by default) in a new file called <code>xanes.dat</code>. Depending on the version of Quantum ESPRESSO, it is possible to set the name of this file in the input file.
+In Quantum ESRESSO Version > 7.0 this can be achieved with the keyword <code>xanes_file</code> in the <code>&PLOT</code> namelist.
 
      $ ls -ltrh
      -rw-r--r-- 1 scarf1097 diag 8.7K Nov 14 11:28 xanes.dat
 
-Let's inspect the spectrum that has been calculated:
-We can rename and plot the xanes spectrum
+Lets inspect the spectrum that has been calculated:
+Since we are using version 6.7 we can manually rename and plot the xanes spectrum with the <code>mv</code> command and plot with <code>gnuplot</code>
 
      $ mv xanes.dat xanes_no_corehole.dat
      $ gnuplot
      gnuplot> plot 'xanes_no_corehole.dat'
 
-At the low energy (less than zero) part of the spectrum we see features that should not be there,
-these correspond to transitions to the filled orbitals
+XSpectra does not calculate absolute transition energies, rather the spectrum zero is set to the system Fermi level. 
+This means that at the low energy (less than zero) part of the spectrum we see features that should not be there,
+these correspond to transitions to the filled orbitals.
 
-We can remove these from the spectrum using the <code>xplot_only</code> option
+We can smoothly remove the contribution of these transitions from the spectrum using the <code>xplot_only</code> keyword in the <code>&INPUT_XSPECTRA</code> namelist
+and the <code>cut_occ_states</code> keyword in the <code>&PLOT</code> namelist.
+
+A key feature here is that once the spectrum has been computed, the information to contstruct it is contained within the <code>x_save_file</code>.
+
+The option <code>xonly_plot</code> instructs the code to skip over the computationally heavy tasks.
 
     $ cat diamond.xspectra_replot.in 
     &input_xspectra
@@ -277,13 +285,23 @@ Run <code>xspectra.x</code> again
 
      Cross-section successfully written in xanes.dat 
 
+Again, we can move the new <code>xanes.dat</code> file manually and plot a comparison of the two spectra we have computed.
+
      $ mv xanes.dat xanes_no_corehole_no_occ_states.dat
      $ gnuplot
      gnuplot> plot 'xanes_no_corehole.dat'; replot 'xanes_no_corehole_no_occ_states.dat'
 
-We can also try to mimic the behaviour of the electronic structure in response to the presence of a hole in the 1s state.
+What should be clear from the plot, is that the occupied states have now been removed from the spectrum and we are left with the theoretical XANES.
 
-For this we use a pseudopotential which has been created with the electronic configuration 1<em>s</em><sup>1</sup>
+The XANES that we have calculated corresponds to the transition from an atomic core level to an unperturbed empty manifold states.
+In reality, the creation of the excitation will renormalise all of the energy levels of the bands/orbitals resulting in different absorption energies and intensities.
+
+We can attempt to account for this modification of the electronic structure by including a potential that looks like a hole in the core orbital.
+This is the so-called core-hole approximation.
+
+For this we use a pseudopotential which has been created with the electronic configuration 1<em>s</em><sup>1</sup>. 
+Note that in practice, we should generate these hole containing pseudopotentials ourselves, but this is not always the easiest thing to do.
+Here instead we will make use of the pseudopotential <code>Ch_PBE_TM_2pj.UPF</code> which has a core-hole included.
 
     $ cat diamondh.scf.in 
     &control
@@ -319,7 +337,7 @@ For this we use a pseudopotential which has been created with the electronic con
     K_POINTS automatic
     4 4 4 0 0 0
 
-We can run the dft calculation with the core-hole
+The core-hole calculation requires a new dft calculation with the <code>pw.x</code>
 
     $ mpirun -np 1 pw.x -inp diamondh.scf.in 
     
@@ -359,11 +377,15 @@ And if we look at the <code>xspectra</code> file we see that not much changes
     /
     4 4 4 1 1 1
 
-We can now plot and inspect the result of ths simulation
+The option <code>xonly_plot</code> has been set to <code>.FALSE.</code> because we must recompute the elements of the spectrum.
+We can run, plot and inspect the result of this <code>xspectra.x</code> simulation
 
+    $ mpirun -np 1 xspectra.x -inp diamondh.xspectra.in
     $ mv xanes.dat xanes_corehole_no_occ_states.dat
     $ gnuplot
     gnuplot> plot 'xanes_corehole_no_occ_states.dat'; replot 'xanes_no_corehole_no_occ_states.dat'
+
+In this example, the effect of the core-hole is very large.
 
 # Example of polarization SiO<sub>2</sub>
 
