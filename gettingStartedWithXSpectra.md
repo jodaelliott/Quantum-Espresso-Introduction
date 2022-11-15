@@ -192,6 +192,8 @@ We can plot the wavefunction file to make sure it makes sense, for this we will 
     gnuplot> set xrange [0:5]
     gnuplot> replot
 
+![WFC](Figures/wfc.png)
+
 If executed correctly should see a plot of the C 1s wavefunction.
 
 Now we can use the <code>xspectra.x</code> code to run the <code>diamond.xspectra.in</code>
