@@ -194,7 +194,7 @@ We can plot the wavefunction file to make sure it makes sense, for this we will 
 
 If executed correctly should see a plot of the C 1s wavefunction.
 
-Now we can use the <code>xspectra.x</code> code to run the <code>diamond.xspectra.in
+Now we can use the <code>xspectra.x</code> code to run the <code>diamond.xspectra.in</code>
 
     $ mpirun -np 1 xspectra.x -inp diamond.xspectra.in
         ...
