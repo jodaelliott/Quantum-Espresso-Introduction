@@ -134,7 +134,7 @@ Now that we have a directory to work in, we can create a soft link (shortcut) to
 The final thing that we will do at this point is copy the material we will use to practice submitting jobs to the cluster.
 This will follow the same principles as in the last lecture
 
-    $ cp -r /work4/dls/shared/introToScarf01 .
+    $ cd Quantum-Espresso-Introduction/Examples/02_Introduction_to_SCARF/Submitting_Batch_Jobs
     $ ls -ltrh
     drwxr-xr-x 3 scarf1097 diag 4.0K Oct  4 10:00 introToScarf01
     $ cd introToScarf01
@@ -220,7 +220,7 @@ This will delete the job from the queue.
     #SBATCH -e job_%J.err
     
     export OMP_NUM_THREADS=1
-    module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
+    module load contrib/dls-spectroscopy/quantum-espresso/7.3.1-GCC-12.2.0
 
     mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
 
@@ -292,7 +292,7 @@ Threading is another way of performing parallel calculations, for now we will no
 
 Setting <code>OMP_NUM_THREADS=1</code> will lead to the job only having parallel tasks
 
-    module load contrib/dls-spectroscopy/quantum-espresso/6.5-intel-18.0.3
+    module load contrib/dls-spectroscopy/quantum-espresso/7.3.1-GCC-12.2.0
 
 We have seen the <code>module load</code> command, if we include this in the job script we will make sure that we keep a record of the version of the software we used to perform the calculation.
     
@@ -319,7 +319,7 @@ Instead of <code>cp</code> we must use a secure copy
 Lets disconnect from SCARF and copy the job file to our local machine
 
     $ exit
-    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/shared/introToScarf01/job.sh .
+    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/myfedid/Quantum-Espresso-Introduction/Examples/02_Introduction_to_SCARF/Submitting_Batch_Jobs/job.sh .
     myfedid@ui1.scarf.rl.ac.uks password: 
     job.sh                                      100%  305    31.1KB/s   00:00
     $ ls -ltrh
@@ -337,13 +337,13 @@ Here since I didnt specify a path, the job.sh will be copied to my home director
 Moving folders between systems is slightly different, first we must create a 'tarball', this is an archived (and possibly compressed) version of the folder that one prepared can be sent between systems.
 
     $ ssh myfedid@ui1.scarf.rl.ac.uk
-    $ cd /work4/dls/myfedid/
-    $ tar -cvf introToScarf01.tar ./introToScarf01
+    $ cd /work4/dls/JoshuaElliott/Quantum-Espresso-Introduction/Examples/02_Introduction_to_SCARF
+    $ tar -cvf Submitting_Batch_Jobs.tar ./Submitting_Batch_Jobs
     $ ls -ltrh
-    -rw-r--r-- 1 scarf1097 diag  14M Oct  4 11:00 introToScarf01.tar
+    -rw-r--r-- 1 scarf1097 diag  14M Oct  4 11:00 Submitting_Batch_Jobs.tar
     $ gzip introToScarf01.tar
     $ ls -ltrh
-    -rw-r--r-- 1 scarf1097 diag  12M Oct  4 11:00 introToScarf01.tar.gz
+    -rw-r--r-- 1 scarf1097 diag  12M Oct  4 11:00 Submitting_Batch_Jobs.tar.gz
 
 Here we have first created the archive with the command <code>tar</code>. 
 We first provided the name of the <code>.tar</code> file that we wanted to create, then the folder that we wanted to build the archive from.
@@ -353,22 +353,22 @@ By compressing the file we make it smaller and therefore it is faster to transfe
 Now we can log out of scarf and secure copy the archive we just created
 
     $ exit
-    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/myfedid/introToScarf01.tar.gz .
+    $ scp myfedid@ui1.scarf.rl.ac.uk:/work4/dls/JoshuaElliott/Quantum-Espresso-Introduction/Examples/02_Introduction_to_SCARF/Submitting_Batch_Jobs.tar.gz .
     $ ls -ltrh
-    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 Submitting_Batch_Jobs.tar.gz
 
 Finally, we can use the <code>tar</code> command to simultaneously decompress and unarchive the tarball we created.
 
-    $ tar -zxvf introToScarf01.tar.gz
+    $ tar -zxvf Submitting_Batch_Jobs.tar.gz
     $ ls -ltrh
-    drwxr-xr-x.  3 nab23632 nab23632 4.0K Oct  4 10:59 introToScarf01
-    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar.gz
+    drwxr-xr-x.  3 nab23632 nab23632 4.0K Oct  4 10:59 Submitting_Batch_Jobs
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 Submitting_Batch_Jobs.tar.gz
 
 Another way to do this in two steps would have been
 
-    $ gunzip introToScarf01.tar.gz
+    $ gunzip Submitting_Batch_Jobs.tar.gz
     $ ls -ltrh
-    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 introToScarf01.tar 
-    $ tar -zxvf introToScarf01.tar
+    -rw-r--r--.  1 nab23632 nab23632  12M Oct  4 11:05 Submitting_Batch_Jobs.tar 
+    $ tar -zxvf Submitting_Batch_Jobs.tar
 
 
