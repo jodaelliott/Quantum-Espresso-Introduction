@@ -131,9 +131,9 @@ We can use the <code>mv</code> command to move the file from one location to ano
 
 Lets use the <code>cp</code> command to get a folder we can use to perform some commands on.
 
-    $ cp -r /dls/science/groups/spectroscopy/Joshua/materialLecture1 .
+    $ cp -r /home/myfedid/Quantum-Espresso-Introduction/Examples/01_Introduction_to_Command_Line .
     $ ls 
-    $ ls ./materialLecture1
+    $ ls ./01_Introduction_to_Command_Line
 
 The option <code>-r</code> stands for recursive copy and works for copying entire directories in one go.
 The files <code>relax.pwi</code> and <code>relax.pwo</code> are examples of a Quantum ESPRESSO input and output file, they are simple
