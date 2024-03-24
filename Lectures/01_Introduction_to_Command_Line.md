@@ -151,8 +151,8 @@ end of the word have been removed.
 
 Lets try to remove the directory in the same way
 
-    $ rm ./materialLecture1
-    rm: cannot remove ‘materialLecture1/’: Is a directory
+    $ rm ./01_Introduction_to_Command_Line
+    rm: cannot remove ‘01_Introduction_to_Command_Line/’: Is a directory
 
 We cannot simply remove a directory as easily as a file, instead we can use one of the two commands <code>rm -r</code> or <code>rmdir</code>.
 (If you do this, dont forget to copy the directory again, we will need it!)
@@ -171,7 +171,7 @@ We are going to see alot more of the following commands in the next section, whe
 
 The contents of a file can be displayed with the <code>cat</code> commamnd. Lets look at the story of Little Red Riding Hood
 
-    $ cd materialLecture1
+    $ cd 01_Introduction_to_Command_Line
     $ cat littleRedRidingHood.txt
 
 The text is printed directly to the terminal, we will see how to control this better soon.
