@@ -12,7 +12,7 @@
 | <code>squeue</code>  | <code>-u</code>                                          | Print the queue status |
 | <code>scancel</code> |                                                          | Cancel a queued/running job |
 |                      |                                                          |                        |
-| <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
+| <code>srun</code>    |                                                          | Execute a command in parallel |
 |                      |                                                          |                        |
 | <code>chmod</code>   | <code>uga</code> <code>rwx<code> <code>+-</code>         | Alter file permissions |
 | <code>ln</code>      | <code>-s</code>                                          | Create a link to a file or directory |
