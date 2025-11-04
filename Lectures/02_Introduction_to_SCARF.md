@@ -12,7 +12,7 @@
 | <code>squeue</code>  | <code>-u</code>                                          | Print the queue status |
 | <code>scancel</code> |                                                          | Cancel a queued/running job |
 |                      |                                                          |                        |
-| <code>mpirun</code>  | <code>-np</code>                                         | Execute a command in parallel |
+| <code>srun</code>    |                                                          | Execute a command in parallel |
 |                      |                                                          |                        |
 | <code>chmod</code>   | <code>uga</code> <code>rwx<code> <code>+-</code>         | Alter file permissions |
 | <code>ln</code>      | <code>-s</code>                                          | Create a link to a file or directory |
@@ -213,16 +213,15 @@ This will delete the job from the queue.
 
     #!/bin/bash
     #SBATCH -p scarf
-    #SBATCH -C amd
-    #SBATCH --nodes=2 --ntasks-per-node=32 
-    #SBATCH -t 560
+    #SBATCH --nodes 1 --ntasks=16 --ntasks-per-node=16 --cpus-per-task=2
+    #SBATCH -t 10:00
     #SBATCH -o job_%J.log
     #SBATCH -e job_%J.err
     
     export OMP_NUM_THREADS=1
-    module load contrib/dls-spectroscopy/quantum-espresso/7.3.1-GCC-12.2.0
+    module load contrib/dls-spectroscopy/quantum-espresso/7.4.1-GCC-14.2.0
 
-    mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
+    srun pw.x -inp c60_scf.pwi > c60_scf.pwo
 
 We have already seen the first line of the job file in the previous lecture.
 
@@ -247,21 +246,23 @@ The <code>-C</code> option allows us to pick which type of node we run our simul
 This can be helpful in trying to configure our job size, for example in the above example we have requested to use the [SCARFs AMD nodes](https://www.scarf.rl.ac.uk/user-guides/amd.html#running-jobs-on-amd-nodes).
 The AMD nodes come with 32-core-per-node, so we know that we must configure our job to run in mutiples of 32 processes. 
 
-    #SBATCH --nodes=2 --ntasks-per-node=32 
+    #SBATCH --nodes 1 --ntasks=16 --ntasks-per-node=16 --cpus-per-task=2
 
 Here we are requesting resources. 
 The option <code>--nodes</code> specifies how many nodes we would like.
+The option <code>--ntasks</code> speciies the total number of parallel tasks we want for the job.
 The option <code>--ntasks-per-node</code> specifies how many tasks/processes we would like on each node.
-In the example, we are asking for 2 AMD nodes, and 32 tasks/processes for each node.
-This means in total our job will split work across 64 cores, and each core will have an associated task.
+The option <code>--cpus-per-task</code> specifies how many physical cpus are allocated to each parallel task.
+In the example, we are asking for 1 nodes, and 16 tasks, and 2 cpus for each task.
+This means in total our job will split work across 32 physical cores, and each pair of cores will have associated task.
 
-    #SBATCH -t 560
+    #SBATCH -t 10:00
 
 The <code>-t</code> is the total amount of time we are requesting for the job.
 We should set this time making sure that our calculation will finish and adhering to the maximum queue lengths (<code>devel</code> = 12 Hours; <code>scarf</code>7 days).  
 The job total time can be set with different formats, generally is easiest to stick to one. 
 Acceptable time formats include  "minutes",  "minutes:seconds", "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds".
-In this example <code>560</code> minutes are requested, which is equivalently:
+For example <code>560</code> minutes could be requested, which is equivalently:
 
     #SBATCH -t 560
     #SBATCH -t 560:00
@@ -292,17 +293,16 @@ Threading is another way of performing parallel calculations, for now we will no
 
 Setting <code>OMP_NUM_THREADS=1</code> will lead to the job only having parallel tasks
 
-    module load contrib/dls-spectroscopy/quantum-espresso/7.3.1-GCC-12.2.0
+    module load contrib/dls-spectroscopy/quantum-espresso/7.4.1-GCC-14.2.0
 
 We have seen the <code>module load</code> command, if we include this in the job script we will make sure that we keep a record of the version of the software we used to perform the calculation.
     
-    mpirun -np ${SLURM_NTASKS} pw.x -inp 'diamond.pwi' > 'diamond.pwo'
+    srun pw.x -inp c60_scf.pwi > c60_scf.pwo
 
-Finally the <code>mpirun</code> command is used to execute the parallel job.
+Finally the <code>srun</code> command is used to execute the parallel job.
 Here <code>pw.x</code> is the part of the Quantum Espresso software suite that performs the DFT calculation. 
 It also has the associated option <code>-inp</code> which specifies where to read input from.
-Moreover, we use a <code>></code> to redirect the output into a new file <code>'diamond.pwo'</code>
-The variable <code>${SLURM_NTASKS}</code> is an environment variable that automatically contains the correct number of tasks we want to run with.
+Moreover, we use a <code>></code> to redirect the output into a new file <code>'c60_scf.pwo'</code>
 
 # Sending and Receiving Data from the Cluster
 
