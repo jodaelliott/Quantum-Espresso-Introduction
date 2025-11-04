@@ -1,0 +1,7 @@
+&PROJWFC
+   prefix      = 'zno'
+   outdir      = './TMP'
+   ngauss      = -1
+   degauss     = 0.0075
+   filpdos     = 'ZnO.pdos'
+/

@@ -1,0 +1,37 @@
+&CONTROL
+   calculation = 'scf'
+   prefix      = 'zno'
+   outdir      = './TMP'
+   pseudo_dir  = '/work4/dls/shared/pslibrary_pbesol/'
+   verbosity   = 'high'
+/
+
+&SYSTEM
+   ibrav   =   4
+   A       =   3.23735102000000
+   C       =   5.22206130000000
+   nat     =   4
+   ntyp    =   2
+   ecutwfc =  60.
+   ecutrho = 600.
+   nspin   =   1
+/
+
+&ELECTRONS
+   startingwfc     = 'atomic'
+   diagonalization = 'cg'
+   conv_thr        = 1.D-9
+/
+
+ATOMIC_SPECIES
+Zn  65.38  Zn.pbesol-spn-rrkjus_gipaw.1.0.0.UPF 
+ O  15.999  O.pbesol-n-rrkjus_gipaw.1.0.0.UPF
+
+ATOMIC_POSITIONS {crystal}
+Zn 0.3333333300 0.6666666700 0.0005917000 
+Zn 0.6666666600 0.3333333300 0.5005917000 
+ O 0.3333333300 0.6666666700 0.3797183000 
+ O 0.6666666600 0.3333333300 0.8797183000 
+
+K_POINTS {automatic}
+5 5 3 1 1 1

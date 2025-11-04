@@ -1,0 +1,8 @@
+&DOS
+   prefix      = 'zno'
+   outdir      = './TMP'
+   bz_sum      = 'smearing'
+   ngauss      = -1
+   degauss     = 0.0075
+   fildos      = 'ZnO.dos'
+/

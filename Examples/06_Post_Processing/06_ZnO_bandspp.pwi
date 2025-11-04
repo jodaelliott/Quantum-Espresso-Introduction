@@ -1,0 +1,5 @@
+&BANDS
+   prefix      = 'zno'
+   outdir      = './TMP'
+   filband     = 'ZnO.bands'
+/
